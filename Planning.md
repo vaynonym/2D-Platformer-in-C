@@ -1,4 +1,4 @@
-#Welche Funktionen wir brauchen:
+# Welche Funktionen wir brauchen:
 
 
 ```adjustScreen```: bewegt den screen ein Feld nach Rechts oder Links nachdem dich der Spieler ein Feld in die entsprechende Richtung bewegt hat.
