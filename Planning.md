@@ -13,3 +13,7 @@
 
 ```playerVictory```: der Spieler hat das Ende der stage erreicht und somit gewonnen.
 
+
+# Ideen wie man Sachen gestalten könnte
+
+**Die Stage**: Mein Vorschlag wäre, dass man eine fertige stage macht (pozedural das ganze zu erstellen halte ich für zu schwierig) und über `adjustscreen` immer ein Ausschnitt der stage gezeigt wird, welcher sich updatet. Also müsste die Stage fertig irgentwo als Datei rumliegen. Wie diese Datei aussehen würde habe ich noch null Plan. - Tim
