@@ -9,7 +9,7 @@
 
 ```detectCollision```: stellt fest, wenn der Spieler gegen etwas gegen läuft oder gegenspringt und verhindert, dass er sich hindurch bewegt. Der Boden zählt natürlich auch.
 
-```playerDeath```: der Spieler ist gestorben (etwa durch collision mit Stacheln, einem Loch oder andere tötliche Objekte). Er wird nur zum Anfang des Levels teleportiert - er respawned.
+```playerDeath```: der Spieler ist gestorben (etwa durch collision mit Stacheln, einem Loch oder andere tötliche Objekte). Er wird nun zum Anfang des Levels teleportiert - er respawned.
 
 ```playerVictory```: der Spieler hat das Ende der stage erreicht und somit gewonnen.
 
