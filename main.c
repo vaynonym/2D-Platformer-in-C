@@ -1,14 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\Misc\include\SDL2\SDL.h"
+#include <stdbool.h>
+#include <time.h>
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-#include <stdbool.h>
 #include "main.h"
+
 
 // Resolution of the game
 const int width = 800; 
 const int height = 600;
+const int levelWidth = 3000;
+
+void initGame(GameState *game, SDL_Window *gameWindow){
+    /*
+    SDL_RENDERER_ACCELERATED  = the renderer uses hardware acceleration
+    SDL_RENDERER_PRESENTVSYNC =  synchronized with the refresh rate of the monitor */
+    game->renderer = SDL_CreateRenderer(gameWindow, // name of window
+                                                -1, // index of rendering driver, -1 being the first that supports the "requested flags"
+                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC // requested flags, explained above
+                                                );
+    // hero
+    game->scrollX = 0;
+    game->hero.x = 120;
+    game->hero.y = 120;
+    game->hero.dx = 0;
+    game->hero.dy = 0;
+    game->hero.groundCollision = true;
+    game->hero.name = "Hero";
+
+    // platforms
+    srand(time(NULL));
+    for (int i = 0; i < 10; i++){
+        game->platforms[i].height = 40;
+        game->platforms[i].width = 200;
+        game->platforms[i].x = rand() % levelWidth;
+        game->platforms[i].y = rand() % height;
+    }
+
+}
 
 bool processEvents(SDL_Window *window, GameState *game){
     SDL_Event event;
@@ -58,51 +89,67 @@ bool processEvents(SDL_Window *window, GameState *game){
 }
 
 void doRender(GameState *game){
-    // SDL_Renderer *renderer = game->renderer;
-    SDL_Rect characterRect = {game->hero.x, game->hero.y, 30, 30};
+
+    SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, 30, 30};
 
     SDL_SetRenderDrawColor(game->renderer, 0, 0, 255, 255); // sets the color for the renderer to draw in
     SDL_RenderClear(game->renderer); //draws the entire screen with the color set
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
-    SDL_RenderFillRect(game->renderer, &characterRect); // draw the rectangle in new color
+    SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
+
+    SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
+    for(int i = 0; i < 10; i++){
+        if(game->platforms[i].x + game->scrollX + game->platforms[i].width < 800){ // only draw platforms which are visible on the screen
+            SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
+            SDL_RenderFillRect(game->renderer, &platform);
+            // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
+        }
+    }
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
 
 int main(int argc, char* args[]){
-    GameState game; // a structure in which we save all important information, makes giving a function the relevant arguments much easier
     SDL_Init(SDL_INIT_VIDEO); 
+
+    GameState game; // a structure in which we save all important information, makes giving a function the relevant arguments much easier
+    
     // Creates a cenetered window for our game
-    SDL_Window *gameWindow = SDL_CreateWindow("Hello World!", //window name
+    SDL_Window *gameWindow = SDL_CreateWindow("Platformer", //window name
                                               SDL_WINDOWPOS_CENTERED, // initial x position
                                               SDL_WINDOWPOS_CENTERED, // initial y position
                                               width, height, //each in pixels
                                               SDL_WINDOW_OPENGL //flags, see https://wiki.libsdl.org/SDL_CreateWindow for a list of the flags
                                               );
-    /*
-    SDL_RENDERER_ACCELERATED  = the renderer uses hardware acceleration
-    SDL_RENDERER_PRESENTVSYNC =  synchronized with the refresh rate of the monitor */
-    game.renderer = SDL_CreateRenderer(gameWindow, // name of window
-                                                -1, // index of rendering driver, -1 being the first that supports the "requested flags"
-                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC // requested flags, explained above
-                                                );
     
-    game.hero.x = 120;
-    game.hero.y = 120;
-    game.hero.dx = 0;
-    game.hero.dy = 0;
+    initGame(&game, gameWindow);
+    
     while(processEvents(gameWindow, &game)){
-        game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+        
+        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player has not left the screen
+            game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+        }
         game.hero.y += game.hero.dy;
+        /*
+        if(game.hero.x + game.scrollX < -levelWidth){
+            game.hero.x = -levelWidth; // the user cannot leave the screen
+        }
+        if(game.hero.x < width + game.scrollX){
+            game.hero.x = width + game.scrollX;
+        }*/
+
+        game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen
+        if (game.scrollX > 0){
+            game.scrollX = 0; // except when he walks further to the left than his spawn point
+        }
         doRender(&game);
+
     }
     // Clearing all ressources used. Mandatory in C.
     SDL_DestroyRenderer(game.renderer);
     SDL_DestroyWindow(gameWindow);
     SDL_Quit();
-    printf("SDL quit.");
-    
 
     return 0;
 }
