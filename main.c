@@ -30,13 +30,13 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.groundCollision = true;
     game->hero.name = "Hero";
 
-    // platforms
+    // platforms, currently generated randomly
     srand(time(NULL));
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < 40; i++){
         game->platforms[i].height = 40;
         game->platforms[i].width = 200;
         game->platforms[i].x = rand() % levelWidth;
-        game->platforms[i].y = rand() % height;
+        game->platforms[i].y = game->platforms[i].height / 2 + (rand() % (height - game->platforms[i].height));
     }
 
 }
@@ -100,7 +100,7 @@ void doRender(GameState *game){
 
     SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
     for(int i = 0; i < 10; i++){
-        if(game->platforms[i].x + game->scrollX + game->platforms[i].width < 800){ // only draw platforms which are visible on the screen
+        if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= 800){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
             SDL_RenderFillRect(game->renderer, &platform);
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
@@ -127,19 +127,12 @@ int main(int argc, char* args[]){
     
     while(processEvents(gameWindow, &game)){
         
-        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player has not left the screen
+        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
             game.hero.x += game.hero.dx; // adjust position of characters according to velocity
         }
-        game.hero.y += game.hero.dy;
-        /*
-        if(game.hero.x + game.scrollX < -levelWidth){
-            game.hero.x = -levelWidth; // the user cannot leave the screen
-        }
-        if(game.hero.x < width + game.scrollX){
-            game.hero.x = width + game.scrollX;
-        }*/
+        game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
 
-        game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen
+        game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
         }
