@@ -8,6 +8,7 @@
 // #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 #include "main.h"
 // #include "init.h"
+#define GRAVITY 0.16f
 
 
 // Resolution of the game
@@ -29,6 +30,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.y = 120;
     game->hero.dx = 0;
     game->hero.dy = 0;
+    game->hero.maxdy = -10.0 //maxdy maybe as level of difficulty
+    game->hero.jumping = false;
     game->hero.groundCollision = true;
     game->hero.lives = 3;
     game->hero.name = "Hero";
@@ -96,9 +99,17 @@ bool processEvents(SDL_Window *window, GameState *game){
             game->hero.dx += 0.5;
         }
     }
-    if(state[SDL_SCANCODE_UP]){ // The hero jumps when the user presses up
-        if(!game->hero.groundCollision){
+    if(game->hero.groundCollision && state[SDL_SCANCODE_UP]){
+        game->hero.groundCollision = false;
+        jumping = true;
+    }//this permits jumping
+    // NOTE: groundcollision has to be set on true when the hero touches the ground
+    if(game->hero.maxdy < 0){ 
+        if(state[SDL_SCANCODE_UP] && jumping){ // The hero jumps when the user presses up
             game->hero.dy -= 0.5;
+            game->hero.maxdy += 0.5; // NOTE: maxdy has to be set on normal when groundcollision becomes true
+        }else{
+            jumping = false;
         }
     }
     return running;
@@ -148,6 +159,7 @@ int main(int argc, char* args[]){
         if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
             game.hero.x += game.hero.dx; // adjust position of characters according to velocity
         }
+        game.hero.dy += GRAVITY;
         game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
 
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
