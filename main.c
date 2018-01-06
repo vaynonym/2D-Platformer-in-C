@@ -5,7 +5,9 @@
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 #include "main.h"
+#include "init.h"
 
 
 // Resolution of the game
@@ -28,6 +30,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.dx = 0;
     game->hero.dy = 0;
     game->hero.groundCollision = true;
+    game->hero.lives = 3;
     game->hero.name = "Hero";
 
     // platforms, currently generated randomly
@@ -38,6 +41,19 @@ void initGame(GameState *game, SDL_Window *gameWindow){
         game->platforms[i].x = rand() % levelWidth;
         game->platforms[i].y = game->platforms[i].height / 2 + (rand() % (height - game->platforms[i].height));
     }
+
+    // loading fonts (currently OpenFont does not work for some reason)
+    /*
+    game->font = TTF_OpenFont("comicsans.tff", 16);
+    
+    if(!game->font){
+        printf("Cannot find font file");
+        SDL_Quit();
+        exit(1);
+    }
+    game->label = NULL;
+    initHud(game);
+    */
 
 }
 
@@ -106,12 +122,14 @@ void doRender(GameState *game){
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
     }
+    // drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
 
 int main(int argc, char* args[]){
     SDL_Init(SDL_INIT_VIDEO); 
+    TTF_Init(); // Initialize Font System
 
     GameState game; // a structure in which we save all important information, makes giving a function the relevant arguments much easier
     
@@ -140,8 +158,14 @@ int main(int argc, char* args[]){
 
     }
     // Clearing all ressources used. Mandatory in C.
+    
+    // TTF_CloseFont(game.font);
+    // clearHud(&game);
     SDL_DestroyRenderer(game.renderer);
     SDL_DestroyWindow(gameWindow);
+
+
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
