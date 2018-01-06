@@ -8,6 +8,7 @@ typedef struct{
     float x, y; // Coordinates of object
     float dx, dy; // Current Velocity
     float maxdy; //maximum vertical velocity
+    bool jumping;
     bool groundCollision; // Does the character currently touch the ground?
     char *name;
     SDL_Texture *texture; // The texture used for 
