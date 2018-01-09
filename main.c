@@ -1,13 +1,14 @@
-#include <stdio.h>
+
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
 #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-// #include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 #include "main.h"
-// #include "init.h"
+#include "init.h"
 #define GRAVITY 0.16f
 
 
@@ -46,18 +47,17 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     }
 
     // loading fonts (currently OpenFont does not work for some reason)
-    /*
-    game->font = TTF_OpenFont("comicsans.tff", 16);
+    
+    game->font = TTF_OpenFont("comicsans.ttf", 16);
     
     if(!game->font){
         printf("Cannot find font file");
         SDL_Quit();
         exit(1);
     }
-    game->label = NULL;
+    game->livesLabel = NULL;
+    game->timeLabel = NULL;
     initHud(game);
-    */
-
 }
 
 bool processEvents(SDL_Window *window, GameState *game){
@@ -133,9 +133,12 @@ void doRender(GameState *game){
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
     }
-    // drawHud(game);
+    drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
+    game->time = game->time + 1;
+
+
 }
 
 int main(int argc, char* args[]){
@@ -171,8 +174,8 @@ int main(int argc, char* args[]){
     }
     // Clearing all ressources used. Mandatory in C.
     
-    // TTF_CloseFont(game.font);
-    // clearHud(&game);
+    TTF_CloseFont(game.font);
+    clearHud(&game);
     SDL_DestroyRenderer(game.renderer);
     SDL_DestroyWindow(gameWindow);
 
