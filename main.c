@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
-#include "SDL.h"
-#include "SDL_opengl.h"
-#include "SDL_main.h"
-#include "SDL_ttf.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
+#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 #include "main.h"
 #include "init.h"
 #define GRAVITY 0.16f
@@ -28,6 +28,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->scrollX = 0;
     game->hero.x = 120;
     game->hero.y = 120;
+    game->hero.width = 30.0f;
+    game->hero.height = 30.0f;
     game->hero.dx = 0;
     game->hero.dy = 0;
     game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
@@ -145,33 +147,32 @@ void detectCollision(GameState *game){
     }
 
     for(int i = 0; i < 10; i++){
-        //SIZE OF HERO SHOULD BE STORED AS CONSTANT
-        float mw = 30.0f, mh = 30.0f;
+
 
         float mx = game->hero.x, my = game->hero.y;
         float bx = game->platforms[i].x, by = game->platforms[i].y,
             bw = game->platforms[i].width, bh = game->platforms[i].height;
 
-        if(my+mh > by && by+bh > bx+bw){
-            if(mx < bx+bw && bx+bw < mx+mw){
-                game->hero.x = bw+mw;
+        if(my+game->hero.height > by && by+bh > bx+bw){
+            if(mx < bx+bw && bx+bw < mx+game->hero.width){
+                game->hero.x = bw+game->hero.width;
                 mx = bx+bw;
                 game->hero.dx = 0.0f;
             }
-            else if(mx+mw > bx && mx < bx){
-                game->hero.x = bx-mw;
-                mx = bx-mw;
+            else if(mx+game->hero.width > bx && mx < bx){
+                game->hero.x = bx-game->hero.width;
+                mx = bx-game->hero.width;
                 game->hero.dx = 0.0f;
             }
         }
 
-        if(mx+mw > bx && mx<bx+bw){
+        if(mx+game->hero.width > bx && mx<bx+bw){
             if(my < by+bh && my > by){
                 game->hero.y = by+bh;
                 game->hero.dy = 0.0f;
             }
-            else if(my+mh > by && my < by){
-                game->hero.y = by-mh;
+            else if(my+game->hero.height > by && my < by){
+                game->hero.y = by-game->hero.height;
                 game->hero.dy = 0.0f;
                 game->hero.groundCollision = true;
                 game->hero.maxdy = -10.0;
