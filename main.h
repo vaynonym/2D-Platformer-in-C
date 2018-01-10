@@ -1,9 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_opengl.h"
+#include "SDL_main.h"
+#include "SDL_ttf.h"
 #include <stdbool.h>
 
 
@@ -48,5 +48,7 @@ typedef struct{
 bool processEvents(SDL_Window *window, GameState *game); // handles user input like closing the game, moving the hero etc.
 
 void doRender(GameState *game); // draws everything onto the screen
+
+void detectCollision(GameState *game);
 
 #endif

@@ -1,12 +1,11 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_opengl.h"
+#include "SDL_main.h"
+#include "SDL_ttf.h"
 #include "main.h"
 #include "init.h"
 #define GRAVITY 0.16f
@@ -48,7 +47,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
 
     // loading fonts (currently OpenFont does not work for some reason)
     
-    game->font = TTF_OpenFont("comicsans.ttf", 16);
+    game->font = TTF_OpenFont("Assets\\Fonts\\comicsans.ttf", 16);
     
     if(!game->font){
         printf("Cannot find font file");
@@ -137,8 +136,48 @@ void doRender(GameState *game){
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
     game->time = game->time + 1;
+}
 
+void detectCollision(GameState *game){
+    if(game->hero.y > height){ //Respawn
+        game->hero.y = 120.0f;
+        game->hero.dy = 0.0f;
+    }
 
+    for(int i = 0; i < 10; i++){
+        //SIZE OF HERO SHOULD BE STORED AS CONSTANT
+        float mw = 30.0f, mh = 30.0f;
+
+        float mx = game->hero.x, my = game->hero.y;
+        float bx = game->platforms[i].x, by = game->platforms[i].y,
+            bw = game->platforms[i].width, bh = game->platforms[i].height;
+
+        if(my+mh > by && by+bh > bx+bw){
+            if(mx < bx+bw && bx+bw < mx+mw){
+                game->hero.x = bw+mw;
+                mx = bx+bw;
+                game->hero.dx = 0.0f;
+            }
+            else if(mx+mw > bx && mx < bx){
+                game->hero.x = bx-mw;
+                mx = bx-mw;
+                game->hero.dx = 0.0f;
+            }
+        }
+
+        if(mx+mw > bx && mx<bx+bw){
+            if(my < by+bh && my > by){
+                game->hero.y = by+bh;
+                game->hero.dy = 0.0f;
+            }
+            else if(my+mh > by && my < by){
+                game->hero.y = by-mh;
+                game->hero.dy = 0.0f;
+                game->hero.groundCollision = true;
+                game->hero.maxdy = -10.0;
+            }
+        }
+    }
 }
 
 int main(int argc, char* args[]){
@@ -169,6 +208,9 @@ int main(int argc, char* args[]){
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
         }
+
+        detectCollision(&game);
+
         doRender(&game);
 
     }
