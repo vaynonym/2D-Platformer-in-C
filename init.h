@@ -1,8 +1,8 @@
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
+#include "SDL.h"
+#include "SDL_opengl.h"
+#include "SDL_main.h"
+#include "SDL_ttf.h"
 #include <stdbool.h>
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 // prototypes, allow calling from outside of main
 
 void initHud(GameState *game);
