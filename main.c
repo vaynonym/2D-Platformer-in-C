@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_opengl.h"
+#include "SDL_main.h"
+#include "SDL_ttf.h"
 #include "main.h"
 #include "init.h"
 #define GRAVITY 0.32f
@@ -123,25 +123,26 @@ bool processEvents(SDL_Window *window, GameState *game){
 
     //alternative, better way of getting which Key is pressed:
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    if(state[SDL_SCANCODE_LEFT]){
-        if(game->hero.dx > -8){ // if the playerCharacter has not exceeded the maximum (negative for left) velocity, increase the current velocity
-            game->hero.dx -= 1;
+    if(state[SDL_SCANCODE_A]){
+        if(game->hero.dx > -6){ // if the playerCharacter has not exceeded the maximum (negative for left) velocity, increase the current velocity
+            game->hero.dx -= 2;
         }
     }
-    if(state[SDL_SCANCODE_RIGHT]){
-        if(game->hero.dx < 8){ // if the playerCharacter has not exceeded the maximum (positive for right) velocity, increase the current velocity
-            game->hero.dx += 1;
+    if(state[SDL_SCANCODE_D]){
+        if(game->hero.dx < 6){ // if the playerCharacter has not exceeded the maximum (positive for right) velocity, increase the current velocity
+            game->hero.dx += 2;
         }
     }
-    if(game->hero.groundCollision && state[SDL_SCANCODE_UP]){
+    printf("GC: %d",game->hero.groundCollision);
+    if(game->hero.groundCollision && state[SDL_SCANCODE_SPACE]){
         game->hero.groundCollision = false;
         game->hero.jumping = true;
     }//this permits jumping
     // NOTE: groundcollision has to be set on true when the hero touches the ground
     if(game->hero.maxdy < 0){ 
-        if(state[SDL_SCANCODE_UP] && game->hero.jumping){ // The hero jumps when the user presses up
-            game->hero.dy -= 1.8;
-            game->hero.maxdy += 1.2; // NOTE: maxdy has to be set on normal when groundcollision becomes true
+        if(state[SDL_SCANCODE_SPACE] && game->hero.jumping){ // The hero jumps when the user presses up
+            game->hero.dy -= 2;
+            game->hero.maxdy += 1.8; // NOTE: maxdy has to be set on normal when groundcollision becomes true
         }else{
             game->hero.jumping = false;
         }
@@ -173,44 +174,92 @@ void doRender(GameState *game){
     game->time = game->time + 1;
 }
 
+
+bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
+    for(int i = 0; i < 10; i++){
+        StaticObject platform = game->platforms[i];
+
+        SDL_Rect rectHero;
+        SDL_Rect rectPlatform;
+        SDL_Rect intersection;
+
+        rectHero.x = game->hero.x + vectorX;
+        rectHero.y = game->hero.y + vectorY;
+        rectHero.w = game->hero.width;
+        rectHero.h = game->hero.height;
+        rectPlatform.x = platform.x;
+        rectPlatform.y = platform.y;
+        rectPlatform.w = platform.width;
+        rectPlatform.h = platform.height;
+
+        SDL_IntersectRect(&rectHero, &rectPlatform, &intersection);
+
+        //Standing on ground is not a collision - +- 1 Pixel?
+        if(intersection.h == 0 && intersection.w > 0){
+            game->hero.dy = 0.0f;
+            vectorY = 0.0f;
+            game->hero.groundCollision = true;
+            game->hero.maxdy = -10.0f;
+            
+            if(debug) printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
+        }
+        else if(intersection.w > 0 && intersection.h > 0){
+            return true;
+        }
+    }
+    return false;
+}
+
 void detectCollision(GameState *game){
+    /*
+    SET VALUES HERE TO AVOID ROUNDING DIFFERENCES
+    */
+
     if(game->hero.y > height){ //Respawn
         game->hero.y = 120.0f;
         game->hero.dy = 0.0f;
+        return;
     }
 
-    for(int i = 0; i < 10; i++){
+    //Vector approximation
+    float vectorX, vectorY, scaledVectorX, scaledVectorY;
+    vectorX = game->hero.tempX - game->hero.x;
+    vectorY = game->hero.tempY - game->hero.y;
+    int scalingFactor, scalingStart;
 
+    game->hero.groundCollision = false;
 
-        float mx = game->hero.x, my = game->hero.y;
-        float bx = game->platforms[i].x, by = game->platforms[i].y,
-            bw = game->platforms[i].width, bh = game->platforms[i].height;
+    //Validating movement
+    if(!isColliding(game, vectorX, vectorY,false)){
+        game->hero.x = game->hero.tempX;
+        if(!game->hero.groundCollision) 
+            game->hero.y = game->hero.tempY;
+        return;
+    }
+    game->hero.groundCollision = false;
 
-        if(my+game->hero.height > by && by+bh > bx+bw){
-            if(mx < bx+bw && bx+bw < mx+game->hero.width){
-                game->hero.x = bw+game->hero.width;
-                mx = bx+bw;
-                game->hero.dx = 0.0f;
-            }
-            else if(mx+game->hero.width > bx && mx < bx){
-                game->hero.x = bx-game->hero.width;
-                mx = bx-game->hero.width;
-                game->hero.dx = 0.0f;
-            }
+    //Otherwise trying to scale vector to keep heading unless vector is zero vector
+    scalingStart = scalingFactor = (int) (vectorX > vectorY ? vectorX : vectorY);
+    //Vector with scalingFactor 1 got already tested as trivial case
+    while(scalingFactor > 1){
+        scalingFactor--;
+        scaledVectorX = (vectorX / (float)scalingStart) * scalingFactor;
+        scaledVectorY = (vectorY / (float)scalingStart) * scalingFactor;
+
+        if(!isColliding(game, scaledVectorX, scaledVectorY,false)){
+            //Scaled vector points to no collision
+            game->hero.x = game->hero.x + scaledVectorX;
+            if(!game->hero.groundCollision) 
+                game->hero.y = game->hero.y + scaledVectorY;
+            return;
         }
+    }
 
-        if(mx+game->hero.width > bx && mx<bx+bw){
-            if(my < by+bh && my > by){
-                game->hero.y = by+bh;
-                game->hero.dy = 0.0f;
-            }
-            else if(my+game->hero.height > by && my < by){
-                game->hero.y = by-game->hero.height;
-                game->hero.dy = 0.0f;
-                game->hero.groundCollision = true;
-                game->hero.maxdy = -10.0;
-            }
-        }
+    game->hero.groundCollision = false;
+    //If reached vector scaling does not change the detected collision.
+    if(isColliding(game, 0.0f, 0.0f,true)){
+        //Respawn
+        printf("RESPAWN!");
     }
 }
 
@@ -225,31 +274,36 @@ int main(int argc, char* args[]){
                                               SDL_WINDOWPOS_CENTERED, // initial x position
                                               SDL_WINDOWPOS_CENTERED, // initial y position
                                               width, height, //each in pixels
-                                              SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS //flags, see https://wiki.libsdl.org/SDL_CreateWindow for a list of the flags
+                                              SDL_WINDOW_OPENGL //flags, see https://wiki.libsdl.org/SDL_CreateWindow for a list of the flags
                                               );
     
     initGame(&game, gameWindow);
     
     while(processEvents(gameWindow, &game)){
         
-        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
-            game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+        game.hero.tempX = game.hero.x;
+        game.hero.tempY = game.hero.y;
+
+        if( !(game.hero.tempX < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
+            game.hero.tempX += game.hero.dx; // adjust position of characters according to velocity
         }
         // Physics
         game.hero.dy += GRAVITY;
         const Uint8 *state = SDL_GetKeyboardState(NULL);
-        if(game.hero.dx > 0 && !state[SDL_SCANCODE_RIGHT])
+        if(game.hero.dx > 0 && !state[SDL_SCANCODE_D])
             game.hero.dx -= 2;  
-        else if(game.hero.dx < 0 && !state[SDL_SCANCODE_LEFT])
+        else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
             game.hero.dx += 2; 
-        game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
+        game.hero.tempY += game.hero.dy; //for now, the player can leave the screen vertically
+
+        game.hero.tempX += game.hero.dx;
+
+        detectCollision(&game);
 
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
         }
-
-        detectCollision(&game);
 
         doRender(&game);
 
