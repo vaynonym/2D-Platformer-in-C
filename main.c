@@ -14,7 +14,7 @@
 // Resolution of the game
 const int width = 1920; 
 const int height = 1080;
-const int levelWidth = 3000;
+const int levelWidth = 10000;
 
 void initGame(GameState *game, SDL_Window *gameWindow){
     /*
@@ -26,8 +26,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
                                                 );
     // hero
     game->scrollX = 0;
-    game->hero.x = 120;
-    game->hero.y = 120;
+    game->hero.x = 300;
+    game->hero.y = 300;
     game->hero.width = 30.0f;
     game->hero.height = 30.0f;
     game->hero.dx = 0;
@@ -38,14 +38,47 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.lives = 3;
     game->hero.name = "Hero";
 
-    // platforms, currently generated randomly
-    srand(time(NULL));
-    for (int i = 0; i < 40; i++){
-        game->platforms[i].height = 40;
-        game->platforms[i].width = 200;
-        game->platforms[i].x = rand() % levelWidth;
-        game->platforms[i].y = game->platforms[i].height / 2 + (rand() % (height - game->platforms[i].height));
-    }
+    // platforms
+    game->platforms[0].height = 400;
+    game->platforms[0].width = 800;
+    game->platforms[0].x = 400;
+    game->platforms[0].y = 880;
+
+    game->platforms[1].height = 400;
+    game->platforms[1].width = 600;
+    game->platforms[1].x = 1200;
+    game->platforms[1].y = 750;
+
+    game->platforms[2].height = 100;
+    game->platforms[2].width = 400;
+    game->platforms[2].x = 2400;
+    game->platforms[2].y = 700;
+
+    game->platforms[3].height = 20;
+    game->platforms[3].width = 60;
+    game->platforms[3].x = 3000;
+    game->platforms[3].y = 950;
+
+    game->platforms[4].height = 20;
+    game->platforms[4].width = 60;
+    game->platforms[4].x = 3500;
+    game->platforms[4].y = 950;
+
+    game->platforms[5].height = 20;
+    game->platforms[5].width = 60;
+    game->platforms[5].x = 4000;
+    game->platforms[5].y = 950;
+
+    game->platforms[6].height = 60;
+    game->platforms[6].width = 400;
+    game->platforms[6].x = 4200;
+    game->platforms[6].y = 560;
+
+    game->platforms[7].height = 20;
+    game->platforms[7].width = 60;
+    game->platforms[7].x = 4800;
+    game->platforms[7].y = 950;
+
 
     // loading fonts (currently OpenFont does not work for some reason)
     
@@ -119,7 +152,7 @@ bool processEvents(SDL_Window *window, GameState *game){
 
 void doRender(GameState *game){
 
-    SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, 30, 30};
+    SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
 
     SDL_SetRenderDrawColor(game->renderer, 0, 0, 255, 255); // sets the color for the renderer to draw in
     SDL_RenderClear(game->renderer); //draws the entire screen with the color set
@@ -127,7 +160,7 @@ void doRender(GameState *game){
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
     SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
 
-    SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
+    SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
     for(int i = 0; i < 10; i++){
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};

@@ -34,8 +34,7 @@ typedef struct{
 
     // Objects
     Character hero;
-    StaticObject ground[10]; 
-    StaticObject platforms[40];
+    StaticObject platforms[10];
 
     // Images
     SDL_Texture *livesLabel;
