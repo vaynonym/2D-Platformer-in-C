@@ -38,9 +38,12 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.lives = 3;
     game->hero.name = "Hero";
 
+    // spawnpoint
+    game->spawnPoint[0].x = 300;
+    game->spawnPoint[0].y = 300;
     // platforms
     game->platforms[0].height = 400;
-    game->platforms[0].width = 800;
+    game->platforms[0].width = 400; //800
     game->platforms[0].x = 400;
     game->platforms[0].y = 880;
 
@@ -215,12 +218,6 @@ void detectCollision(GameState *game){
     SET VALUES HERE TO AVOID ROUNDING DIFFERENCES
     */
 
-    if(game->hero.y > height){ //Respawn
-        game->hero.y = 120.0f;
-        game->hero.dy = 0.0f;
-        return;
-    }
-
     //Vector approximation
     float vectorX, vectorY, scaledVectorX, scaledVectorY;
     vectorX = game->hero.tempX - game->hero.x;
@@ -260,6 +257,22 @@ void detectCollision(GameState *game){
     if(isColliding(game, 0.0f, 0.0f,true)){
         //Respawn
         printf("RESPAWN!");
+    }
+}
+
+void setSpawnpoint(GameState *game){
+    if(hero->groundCollision && game->hero.x > game->spawnPoint[0].x){
+        game->spawnPoint[0].x = game->hero.x;
+        game->spawnPoint[0].y = game->hero.y;
+    }
+}
+// dynamischer spawnpoint
+
+void respawn(GameState *game){
+    if(game->hero.lives == 0 || game->hero.y > height){
+        //if the hero has no lives left or if he is falling into the abyss
+        game->hero.x = game->spawnPoint[0].x;
+        game->hero.y = game->spawnPoint[0].y;
     }
 }
 

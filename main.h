@@ -34,6 +34,7 @@ typedef struct{
 
     // Objects
     Character hero;
+    StaticObject spawnPoint[1];
     StaticObject platforms[10];
 
     // Images
