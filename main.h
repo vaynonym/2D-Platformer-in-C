@@ -32,6 +32,8 @@ typedef struct{
     char *currentStage;
     SDL_Renderer *renderer;
 
+    bool updateHud; // currently only updates lives
+
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
@@ -54,5 +56,9 @@ void doRender(GameState *game); // draws everything onto the screen
 bool isColliding(GameState *game, float vectorX, float vectorY, bool debug);
 
 void detectCollision(GameState *game);
+
+void respawn(GameState *game);
+
+void setSpawnpoint(GameState *game);
 
 #endif
