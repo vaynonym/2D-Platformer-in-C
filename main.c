@@ -26,7 +26,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
                                                 );
     // hero
     game->scrollX = 0;
-    game->hero.x = 300;
+    game->hero.x = 400;
     game->hero.y = 300;
     game->hero.width = 30.0f;
     game->hero.height = 30.0f;
@@ -34,7 +34,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.dy = 0;
     game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
     game->hero.jumping = false;
-    game->hero.groundCollision = true;
+    game->hero.groundCollision = false;
     game->hero.lives = 3;
     game->hero.name = "Hero";
 
@@ -136,7 +136,6 @@ bool processEvents(SDL_Window *window, GameState *game){
             game->hero.dx += 2;
         }
     }
-    printf("GC: %d",game->hero.groundCollision);
     if(game->hero.groundCollision && state[SDL_SCANCODE_SPACE]){
         game->hero.groundCollision = false;
         game->hero.jumping = true;
@@ -204,7 +203,9 @@ bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
             game->hero.groundCollision = true;
             game->hero.maxdy = -10.0f;
             
-            if(debug) printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
+            if(debug){ 
+                printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
+            }
         }
         else if(intersection.w > 0 && intersection.h > 0){
             return true;
@@ -214,6 +215,7 @@ bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
 }
 
 void detectCollision(GameState *game){
+    
     /*
     SET VALUES HERE TO AVOID ROUNDING DIFFERENCES
     */
@@ -256,12 +258,12 @@ void detectCollision(GameState *game){
     //If reached vector scaling does not change the detected collision.
     if(isColliding(game, 0.0f, 0.0f,true)){
         //Respawn
-        printf("RESPAWN!");
+        respawn(game);
     }
 }
 
 void setSpawnpoint(GameState *game){
-    if(hero->groundCollision && game->hero.x > game->spawnPoint[0].x){
+    if(game->hero.groundCollision && (game->hero.x > game->spawnPoint[0].x + 100)){
         game->spawnPoint[0].x = game->hero.x;
         game->spawnPoint[0].y = game->hero.y;
     }
@@ -269,11 +271,22 @@ void setSpawnpoint(GameState *game){
 // dynamischer spawnpoint
 
 void respawn(GameState *game){
-    if(game->hero.lives == 0 || game->hero.y > height){
-        //if the hero has no lives left or if he is falling into the abyss
+    game->hero.dx = 0;
+    game->hero.dy = 0;
+    game->hero.lives--;
+    
+    if(game->hero.lives == 0 ){ // gameover. Restarting game.
+        game->hero.x = 400;
+        game->hero.y = 300;
+        game->spawnPoint[0].x = 400;
+        game->spawnPoint[0].y = 300;
+        game->hero.lives = 3;
+    }
+    else{ // normal respawn
         game->hero.x = game->spawnPoint[0].x;
         game->hero.y = game->spawnPoint[0].y;
     }
+    game->updateHud = true; // update the now changed lives
 }
 
 int main(int argc, char* args[]){
@@ -312,7 +325,10 @@ int main(int argc, char* args[]){
         game.hero.tempX += game.hero.dx;
 
         detectCollision(&game);
-
+        setSpawnpoint(&game);
+        if(game.hero.y > 1000){
+            respawn(&game);
+        }
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
