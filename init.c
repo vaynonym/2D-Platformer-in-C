@@ -9,26 +9,37 @@
 
 
 void initHud(GameState *game){
-    char livesStr[128] = "";
-    sprintf(livesStr, "Lives: %d", game->hero.lives);
-    // char timeStr[128] = "";
-    // sprintf(timeStr, "%d", game->time);
+
     game->currentStage = "Draftlevel 24601";
+    char livesStr[8] = "";
+    sprintf(livesStr, "Lives: %d", game->hero.lives);
 
     SDL_Color white = {255,255,255,255};
 
     SDL_Surface *tmpLives = TTF_RenderText_Blended(game->font, livesStr, white);
     SDL_Surface *tmpStageName = TTF_RenderText_Blended(game->font, game->currentStage, white);
-    game->livesLabel = SDL_CreateTextureFromSurface(game->renderer, tmpLives);
+
     game->stageLabel = SDL_CreateTextureFromSurface(game->renderer, tmpStageName);
-    SDL_FreeSurface(tmpLives);
+    game->livesLabel = SDL_CreateTextureFromSurface(game->renderer, tmpLives);
+    
     SDL_FreeSurface(tmpStageName);
+    SDL_FreeSurface(tmpLives);
 
 
 }
 
 void drawHud(GameState *game){
+
     SDL_Color white = {255,255,255,255};
+
+    if(game->updateHud){ // dynamically update lives after a respawn
+        char livesStr[8] = "";
+        sprintf(livesStr, "Lives: %d", game->hero.lives);
+        SDL_Surface *tmpLives = TTF_RenderText_Blended(game->font, livesStr, white);
+        game->livesLabel = SDL_CreateTextureFromSurface(game->renderer, tmpLives);
+        SDL_FreeSurface(tmpLives);
+        game->updateHud = false;
+    }
 
     // Makes a Texture for Time, dynamically updated every 60 frames. Corresponds roughly with time in seconds if run at 60 fps
     if (game->time%60 == 0){
@@ -44,15 +55,15 @@ void drawHud(GameState *game){
     int w, h; //texture width and height
     // livesLabel
     SDL_QueryTexture(game->livesLabel, NULL, NULL, &w, &h);
-    SDL_Rect livesRect = {20, 20, w, h};
+    SDL_Rect livesRect = {200, 120, w, h};
     SDL_RenderCopy(game->renderer, game->livesLabel, NULL, &livesRect);
     // timeLabel
     SDL_QueryTexture(game->timeLabel, NULL, NULL, &w, &h);
-    SDL_Rect timeRect = {640, 20, w, h};
+    SDL_Rect timeRect = {940, 120, w, h};
     SDL_RenderCopy(game->renderer, game->timeLabel, NULL, &timeRect);
     // stageName
     SDL_QueryTexture(game->stageLabel, NULL, NULL, &w, &h);
-    SDL_Rect stageRect = {300, 20, w, h};
+    SDL_Rect stageRect = {500, 120, w, h};
     SDL_RenderCopy(game->renderer, game->stageLabel, NULL, &stageRect);
 
 }
