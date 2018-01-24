@@ -55,7 +55,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->platforms[2].height = 100;
     game->platforms[2].width = 400;
     game->platforms[2].x = 2400;
-    game->platforms[2].y = 700;
+    game->platforms[2].y = 900;
 
     game->platforms[3].height = 20;
     game->platforms[3].width = 60;
@@ -64,28 +64,68 @@ void initGame(GameState *game, SDL_Window *gameWindow){
 
     game->platforms[4].height = 20;
     game->platforms[4].width = 60;
-    game->platforms[4].x = 3500;
-    game->platforms[4].y = 950;
+    game->platforms[4].x = 3000;
+    game->platforms[4].y = 650;
 
     game->platforms[5].height = 20;
     game->platforms[5].width = 60;
-    game->platforms[5].x = 4000;
-    game->platforms[5].y = 950;
+    game->platforms[5].x = 3000;
+    game->platforms[5].y = 350;
 
-    game->platforms[6].height = 60;
-    game->platforms[6].width = 400;
-    game->platforms[6].x = 4200;
-    game->platforms[6].y = 560;
+    game->platforms[6].height = 20;
+    game->platforms[6].width = 60;
+    game->platforms[6].x = 3500;
+    game->platforms[6].y = 800;
 
     game->platforms[7].height = 20;
     game->platforms[7].width = 60;
-    game->platforms[7].x = 4800;
-    game->platforms[7].y = 950;
+    game->platforms[7].x = 3500;
+    game->platforms[7].y = 500;
 
+    game->platforms[8].height = 20;
+    game->platforms[8].width = 60;
+    game->platforms[8].x = 3500;
+    game->platforms[8].y = 200;
+
+    game->platforms[9].height = 20;
+    game->platforms[9].width = 600;
+    game->platforms[9].x = 3950;
+    game->platforms[9].y = 100;
+
+    game->platforms[10].height = 20;
+    game->platforms[10].width = 45;
+    game->platforms[10].x = 4650;
+    game->platforms[10].y = 1000;
+    
+    game->platforms[11].height = 100;
+    game->platforms[11].width = 700;
+    game->platforms[11].x = 5150;
+    game->platforms[11].y = 1000;
+    /*
+    game->platforms[12].height = 20;
+    game->platforms[12].width = 60;
+    game->platforms[12].x = 3500;
+    game->platforms[12].y = 200;
+    
+    game->platforms[13].height = 20;
+    game->platforms[13].width = 60;
+    game->platforms[13].x = 3500;
+    game->platforms[13].y = 200;
+    
+    game->platforms[14].height = 20;
+    game->platforms[14].width = 60;
+    game->platforms[14].x = 3500;
+    game->platforms[14].y = 200;
+    
+    game->platforms[15].height = 20;
+    game->platforms[15].width = 60;
+    game->platforms[15].x = 3500;
+    game->platforms[15].y = 200;
+    */
 
     // loading fonts (currently OpenFont does not work for some reason)
     
-    game->font = TTF_OpenFont("Assets\\Fonts\\comicsans.ttf", 16);
+    game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 16);
     
     if(!game->font){
         printf("Cannot find font file");
@@ -163,7 +203,7 @@ void doRender(GameState *game){
     SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 12; i++){ //PLATFORMS
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
             SDL_RenderFillRect(game->renderer, &platform);
@@ -178,7 +218,7 @@ void doRender(GameState *game){
 
 
 bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 12; i++){ //PLATFORMS
         StaticObject platform = game->platforms[i];
 
         SDL_Rect rectHero;
