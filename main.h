@@ -21,6 +21,7 @@ typedef struct{
     int x, y; //coordinates
     int height, width; 
     bool deadly, visible;
+    bool moveRight;
 } StaticObject;
 
 typedef struct{
@@ -34,7 +35,7 @@ typedef struct{
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
-    StaticObject platforms[12]; //PLATFORMS
+    StaticObject platforms[26]; //PLATFORMS
 
     // Images
     SDL_Texture *livesLabel;

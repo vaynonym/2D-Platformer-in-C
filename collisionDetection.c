@@ -8,7 +8,7 @@
 #include "collisionDetection.h"
 
 bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
-    for(int i = 0; i < 12; i++){ //PLATFORMS
+    for(int i = 0; i < 26; i++){ //PLATFORMS
         StaticObject platform = game->platforms[i];
 
         SDL_Rect rectHero;

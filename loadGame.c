@@ -104,10 +104,10 @@ void loadPlatforms(GameState *game){
     game->platforms[8].y = 200;
 
     game->platforms[9].height = 20;
-    game->platforms[9].width = 600;
+    game->platforms[9].width = 120;
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
-
+    //moving
     game->platforms[10].height = 20;
     game->platforms[10].width = 45;
     game->platforms[10].x = 4650;
@@ -117,25 +117,77 @@ void loadPlatforms(GameState *game){
     game->platforms[11].width = 700;
     game->platforms[11].x = 5150;
     game->platforms[11].y = 1000;
-    /*
-    game->platforms[12].height = 20;
-    game->platforms[12].width = 60;
-    game->platforms[12].x = 3500;
-    game->platforms[12].y = 200;
     
-    game->platforms[13].height = 20;
-    game->platforms[13].width = 60;
-    game->platforms[13].x = 3500;
-    game->platforms[13].y = 200;
-    
+    game->platforms[12].height = 500;
+    game->platforms[12].width = 45;
+    game->platforms[12].x = 5900;
+    game->platforms[12].y = 100;
+    game->platforms[12].moveRight = true;
+    //moving
+    game->platforms[13].height = 100;
+    game->platforms[13].width = 45;
+    game->platforms[13].x = 5900;
+    game->platforms[13].y = 950;
+    game->platforms[13].moveRight = false;
+    //moving
     game->platforms[14].height = 20;
-    game->platforms[14].width = 60;
-    game->platforms[14].x = 3500;
-    game->platforms[14].y = 200;
+    game->platforms[14].width = 45;
+    game->platforms[14].x = 6200;
+    game->platforms[14].y = 850;
     
     game->platforms[15].height = 20;
-    game->platforms[15].width = 60;
-    game->platforms[15].x = 3500;
-    game->platforms[15].y = 200;
-    */
+    game->platforms[15].width = 45;
+    game->platforms[15].x = 6200;
+    game->platforms[15].y = 700;
+
+    game->platforms[16].height = 20;
+    game->platforms[16].width = 45;
+    game->platforms[16].x = 6200;
+    game->platforms[16].y = 550;
+
+    game->platforms[17].height = 20;
+    game->platforms[17].width = 45;
+    game->platforms[17].x = 6200;
+    game->platforms[17].y = 400;
+
+    game->platforms[18].height = 20;
+    game->platforms[18].width = 45;
+    game->platforms[18].x = 6200;
+    game->platforms[18].y = 250;
+
+    game->platforms[19].height = 20;
+    game->platforms[19].width = 45;
+    game->platforms[19].x = 6200;
+    game->platforms[19].y = 100;
+    
+    game->platforms[20].height = 20;
+    game->platforms[20].width = 120;
+    game->platforms[20].x = 6400;
+    game->platforms[20].y = 100;
+    game->platforms[20].moveRight = true;
+    //moving
+    game->platforms[21].height = 30;
+    game->platforms[21].width = 30;
+    game->platforms[21].x = 6700;
+    game->platforms[21].y = 70;
+    game->platforms[21].deadly = true;
+    //deadly
+    game->platforms[22].height = 30;
+    game->platforms[22].width = 30;
+    game->platforms[22].x = 6900;
+    game->platforms[22].y = 70;
+    game->platforms[22].deadly = true;
+    //deadly
+    game->platforms[23].height = 30;
+    game->platforms[23].width = 30;
+    game->platforms[23].x = 7100;
+    game->platforms[23].y = 70;
+    game->platforms[23].deadly = true;
+    //deadly
+    game->platforms[24].height = 30;
+    game->platforms[24].width = 30;
+    game->platforms[24].x = 7300;
+    game->platforms[24].y = 70;
+    game->platforms[24].deadly = true;
+    //deadly
 }

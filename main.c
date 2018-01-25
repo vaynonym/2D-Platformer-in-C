@@ -84,7 +84,7 @@ void doRender(GameState *game){
     SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
-    for(int i = 0; i < 12; i++){ //PLATFORMS
+    for(int i = 0; i < 26; i++){ //PLATFORMS
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
             SDL_RenderFillRect(game->renderer, &platform);
@@ -95,6 +95,55 @@ void doRender(GameState *game){
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
     game->time = game->time + 1;
+}
+
+void movePlatform(GameState *game){
+    if(game->platforms[9].x > 4550){
+        game->platforms[9].moveRight = false;
+    }else if(game->platforms[9].x < 3950){
+        game->platforms[9].moveRight = true;
+    }
+    if(game->platforms[9].moveRight){
+        game->platforms[9].x += 6;
+    }else{
+        game->platforms[9].x -= 6;
+    }
+    //moves paltform[9]
+    if(game->platforms[12].y > 300 ){
+        game->platforms[12].moveRight = false;
+    }else if(game->platforms[12].y < 100){
+        game->platforms[12].moveRight = true;
+    }
+    if(game->platforms[12].moveRight){
+        game->platforms[12].y += 6;
+    }else{
+        game->platforms[12].y -= 6;
+    }
+    //moves platform[12]
+
+    if(game->platforms[13].y > 950){
+        game->platforms[13].moveRight = false;
+    }else if(game->platforms[13].y < 750){
+        game->platforms[13].moveRight = true;
+    }
+    if(game->platforms[13].moveRight){
+        game->platforms[13].y += 6;
+    }else{
+        game->platforms[13].y -= 6;
+    }
+    //moves platform[13]
+
+    if(7500 < game->platforms[20].x){
+        game->platforms[20].moveRight = false;
+    }else if(game->platforms[20].x < 6400){
+        game->platforms[20].moveRight = true;                
+    }
+    if(game->platforms[20].moveRight){
+        game->platforms[20].x += 6;
+    }else{
+        game->platforms[20].x -= 6;
+    }
+    //moves the platform[20]
 }
 
 void setSpawnpoint(GameState *game){
@@ -169,7 +218,7 @@ int main(int argc, char* args[]){
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
         }
-
+        movePlatform(&game);
         doRender(&game);
 
     }
