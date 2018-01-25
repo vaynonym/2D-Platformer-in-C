@@ -1,9 +1,5 @@
 #ifndef MAIN_H
 #define MAIN_H
-#include "SDL.h"
-#include "SDL_opengl.h"
-#include "SDL_main.h"
-#include "SDL_ttf.h"
 #include <stdbool.h>
 
 
@@ -24,6 +20,7 @@ typedef struct{
 typedef struct{
     int x, y; //coordinates
     int height, width; 
+    bool deadly, visible;
 } StaticObject;
 
 typedef struct{
