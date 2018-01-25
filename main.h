@@ -1,15 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_opengl.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_main.h"
-#include "C:\Users\Tim Ruschke\Desktop\University\Prozedurale Programmierung\Project\misc\include\SDL2\SDL_ttf.h"
 #include <stdbool.h>
 
 
 
 typedef struct{
     float x, y; // Coordinates of object
+    float tempX, tempY;
     float width, height; // size of character
     float dx, dy; // Current Velocity
     float maxdy; //maximum vertical velocity
@@ -23,6 +20,7 @@ typedef struct{
 typedef struct{
     int x, y; //coordinates
     int height, width; 
+    bool deadly, visible;
 } StaticObject;
 
 typedef struct{
@@ -31,10 +29,12 @@ typedef struct{
     char *currentStage;
     SDL_Renderer *renderer;
 
+    bool updateHud; // currently only updates lives
+
     // Objects
     Character hero;
-    StaticObject ground[10]; 
-    StaticObject platforms[40];
+    StaticObject spawnPoint[1];
+    StaticObject platforms[12]; //PLATFORMS
 
     // Images
     SDL_Texture *livesLabel;
@@ -50,6 +50,12 @@ bool processEvents(SDL_Window *window, GameState *game); // handles user input l
 
 void doRender(GameState *game); // draws everything onto the screen
 
+bool isColliding(GameState *game, float vectorX, float vectorY, bool debug);
+
 void detectCollision(GameState *game);
+
+void respawn(GameState *game);
+
+void setSpawnpoint(GameState *game);
 
 #endif
