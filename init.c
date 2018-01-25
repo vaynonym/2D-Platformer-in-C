@@ -1,9 +1,9 @@
+#include <stdbool.h>
+#include <stdio.h>
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include "SDL_main.h"
 #include "SDL_ttf.h"
-#include <stdbool.h>
-#include <stdio.h>
 #include "main.h"
 #include "init.h"
 
