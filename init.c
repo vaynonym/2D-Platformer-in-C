@@ -55,15 +55,15 @@ void drawHud(GameState *game){
     int w, h; //texture width and height
     // livesLabel
     SDL_QueryTexture(game->livesLabel, NULL, NULL, &w, &h);
-    SDL_Rect livesRect = {200, 120, w, h};
+    SDL_Rect livesRect = {200, 30, w, h};
     SDL_RenderCopy(game->renderer, game->livesLabel, NULL, &livesRect);
     // timeLabel
     SDL_QueryTexture(game->timeLabel, NULL, NULL, &w, &h);
-    SDL_Rect timeRect = {940, 120, w, h};
+    SDL_Rect timeRect = {1600, 30, w, h};
     SDL_RenderCopy(game->renderer, game->timeLabel, NULL, &timeRect);
     // stageName
     SDL_QueryTexture(game->stageLabel, NULL, NULL, &w, &h);
-    SDL_Rect stageRect = {500, 120, w, h};
+    SDL_Rect stageRect = {800, 30, w, h};
     SDL_RenderCopy(game->renderer, game->stageLabel, NULL, &stageRect);
 
 }
