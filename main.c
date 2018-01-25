@@ -9,6 +9,7 @@
 #include "main.h"
 #include "init.h"
 #include "loadGame.h"
+#include "collisionDetection.h"
 #define GRAVITY 0.32f
 
 
@@ -96,92 +97,6 @@ void doRender(GameState *game){
     game->time = game->time + 1;
 }
 
-
-bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
-    for(int i = 0; i < 12; i++){ //PLATFORMS
-        StaticObject platform = game->platforms[i];
-
-        SDL_Rect rectHero;
-        SDL_Rect rectPlatform;
-        SDL_Rect intersection;
-
-        rectHero.x = game->hero.x + vectorX;
-        rectHero.y = game->hero.y + vectorY;
-        rectHero.w = game->hero.width;
-        rectHero.h = game->hero.height;
-        rectPlatform.x = platform.x;
-        rectPlatform.y = platform.y;
-        rectPlatform.w = platform.width;
-        rectPlatform.h = platform.height;
-
-        SDL_IntersectRect(&rectHero, &rectPlatform, &intersection);
-
-        //Standing on ground is not a collision - +- 1 Pixel?
-        if(intersection.h == 0 && intersection.w > 0){
-            game->hero.dy = 0.0f;
-            vectorY = 0.0f;
-            game->hero.groundCollision = true;
-            game->hero.maxdy = -10.0f;
-            
-            if(debug){ 
-                printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
-            }
-        }
-        else if(intersection.w > 0 && intersection.h > 0){
-            return true;
-        }
-    }
-    return false;
-}
-
-void detectCollision(GameState *game){
-    
-    /*
-    SET VALUES HERE TO AVOID ROUNDING DIFFERENCES
-    */
-
-    //Vector approximation
-    float vectorX, vectorY, scaledVectorX, scaledVectorY;
-    vectorX = game->hero.tempX - game->hero.x;
-    vectorY = game->hero.tempY - game->hero.y;
-    int scalingFactor, scalingStart;
-
-    game->hero.groundCollision = false;
-
-    //Validating movement
-    if(!isColliding(game, vectorX, vectorY,false)){
-        game->hero.x = game->hero.tempX;
-        if(!game->hero.groundCollision) 
-            game->hero.y = game->hero.tempY;
-        return;
-    }
-    game->hero.groundCollision = false;
-
-    //Otherwise trying to scale vector to keep heading unless vector is zero vector
-    scalingStart = scalingFactor = (int) (vectorX > vectorY ? vectorX : vectorY);
-    //Vector with scalingFactor 1 got already tested as trivial case
-    while(scalingFactor > 1){
-        scalingFactor--;
-        scaledVectorX = (vectorX / (float)scalingStart) * scalingFactor;
-        scaledVectorY = (vectorY / (float)scalingStart) * scalingFactor;
-
-        if(!isColliding(game, scaledVectorX, scaledVectorY,false)){
-            //Scaled vector points to no collision
-            game->hero.x = game->hero.x + scaledVectorX;
-            if(!game->hero.groundCollision) 
-                game->hero.y = game->hero.y + scaledVectorY;
-            return;
-        }
-    }
-
-    game->hero.groundCollision = false;
-    //If reached vector scaling does not change the detected collision.
-    if(isColliding(game, 0.0f, 0.0f,true)){
-        //Respawn
-        respawn(game);
-    }
-}
-
 void setSpawnpoint(GameState *game){
     if(game->hero.groundCollision && (game->hero.x > game->spawnPoint[0].x + 100)){
         game->spawnPoint[0].x = game->hero.x;
@@ -233,6 +148,7 @@ int main(int argc, char* args[]){
         if( !(game.hero.tempX < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
             game.hero.tempX += game.hero.dx; // adjust position of characters according to velocity
         }
+        
         // Physics
         game.hero.dy += GRAVITY;
         const Uint8 *state = SDL_GetKeyboardState(NULL);
@@ -241,14 +157,14 @@ int main(int argc, char* args[]){
         else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
             game.hero.dx += 2; 
         game.hero.tempY += game.hero.dy; //for now, the player can leave the screen vertically
-
         game.hero.tempX += game.hero.dx;
-
         detectCollision(&game);
+        
         setSpawnpoint(&game);
         if(game.hero.y > 1000){
             respawn(&game);
         }
+
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
