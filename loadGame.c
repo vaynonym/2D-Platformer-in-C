@@ -9,6 +9,7 @@
 #include "init.h"
 #include "loadGame.h"
 #include "main.h"
+#include "collectible.h"
 
 void loadGame(GameState *game, SDL_Window *gameWindow){
     initGame(game, gameWindow);
@@ -35,6 +36,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.jumping = false;
     game->hero.groundCollision = false;
     game->hero.lives = 3;
+    game->hero.points = 0;
     game->hero.name = "Hero";
 
     // spawnpoint
@@ -138,4 +140,28 @@ void loadPlatforms(GameState *game){
     game->platforms[15].x = 3500;
     game->platforms[15].y = 200;
     */
+
+    game->healthItems[0].visible = true;
+    game->healthItems[0].increasePoints = false;
+    game->healthItems[0].increaseLives = true;
+    game->healthItems[0].x = 3000.0f;
+    game->healthItems[0].y = 450.0f;
+
+    game->healthItems[1].visible = true;
+    game->healthItems[1].increasePoints = false;
+    game->healthItems[1].increaseLives = true;
+    game->healthItems[1].x = 3500;
+    game->healthItems[1].y = 750;
+
+    game->pointItems[0].visible = true;
+    game->pointItems[0].increasePoints = true;
+    game->pointItems[0].increaseLives = true;
+    game->pointItems[0].x = 3500;
+    game->pointItems[0].y = 150;
+
+    game->pointItems[1].visible = true;
+    game->pointItems[1].increasePoints = true;
+    game->pointItems[1].increaseLives = true;
+    game->pointItems[1].x = 3550;
+    game->pointItems[1].y = 50;
 }
