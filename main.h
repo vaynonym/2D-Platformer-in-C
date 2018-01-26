@@ -13,7 +13,7 @@ typedef struct{
     bool jumping;
     bool groundCollision; // Does the character currently touch the ground?
     char *name;
-    int lives;
+    int lives, points;
     SDL_Texture *texture; // The texture used for 
 } Character;
 
@@ -21,7 +21,13 @@ typedef struct{
     int x, y; //coordinates
     int height, width; 
     bool deadly, visible;
+    bool moveRight;
 } StaticObject;
+
+typedef struct {
+    bool visible, increasePoints, increaseLives;
+    float x, y;
+} Collectible;
 
 typedef struct{
     float scrollX; // determines the part of the stage the hero/ player sees
@@ -34,7 +40,9 @@ typedef struct{
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
-    StaticObject platforms[12]; //PLATFORMS
+    StaticObject platforms[42]; //PLATFORMS
+    Collectible healthItems[2];
+    Collectible pointItems[2];
 
     // Images
     SDL_Texture *livesLabel;

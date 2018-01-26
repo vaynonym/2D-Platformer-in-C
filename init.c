@@ -11,7 +11,7 @@
 void initHud(GameState *game){
 
     game->currentStage = "Draftlevel 24601";
-    char livesStr[8] = "";
+    char livesStr[12] = "";
     sprintf(livesStr, "Lives: %d", game->hero.lives);
 
     SDL_Color white = {255,255,255,255};
@@ -33,7 +33,7 @@ void drawHud(GameState *game){
     SDL_Color white = {255,255,255,255};
 
     if(game->updateHud){ // dynamically update lives after a respawn
-        char livesStr[8] = "";
+        char livesStr[12] = "";
         sprintf(livesStr, "Lives: %d", game->hero.lives);
         SDL_Surface *tmpLives = TTF_RenderText_Blended(game->font, livesStr, white);
         game->livesLabel = SDL_CreateTextureFromSurface(game->renderer, tmpLives);
