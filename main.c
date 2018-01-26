@@ -10,6 +10,7 @@
 #include "init.h"
 #include "loadGame.h"
 #include "collisionDetection.h"
+#include "collectible.h"
 #define GRAVITY 0.32f
 
 
@@ -91,6 +92,27 @@ void doRender(GameState *game){
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
     }
+
+    SDL_SetRenderDrawColor(game->renderer, 255, 0, 0, 255);
+
+    for(int i = 0; i < 2; i++){
+        Collectible collectible = game->healthItems[i];
+        if(collectible.visible){
+            SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
+            SDL_RenderFillRect(game->renderer, &rectCollectible);
+        }
+    }
+
+    SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
+
+    for(int i = 0; i < 2; i++){
+        Collectible collectible = game->pointItems[i];
+        if(collectible.visible){
+            SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
+            SDL_RenderFillRect(game->renderer, &rectCollectible);
+        }
+    }
+
     drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
@@ -165,6 +187,7 @@ void respawn(GameState *game){
         game->spawnPoint[0].x = 400;
         game->spawnPoint[0].y = 300;
         game->hero.lives = 3;
+        resetCollectibles(game);
     }
     else{ // normal respawn
         game->hero.x = game->spawnPoint[0].x;
@@ -218,7 +241,11 @@ int main(int argc, char* args[]){
         if (game.scrollX > 0){
             game.scrollX = 0; // except when he walks further to the left than his spawn point
         }
+
         movePlatform(&game);
+
+        testForAllCollectibles(&game);
+
         doRender(&game);
 
     }
