@@ -17,7 +17,7 @@
 // Resolution of the game
 const int width = 1920; 
 const int height = 1080;
-const int levelWidth = 10000;
+const int levelWidth = 12000;
 
 bool processEvents(SDL_Window *window, GameState *game){
     SDL_Event event;
@@ -85,7 +85,7 @@ void doRender(GameState *game){
     SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
-    for(int i = 0; i < 26; i++){ //PLATFORMS
+    for(int i = 0; i < 42; i++){ //PLATFORMS
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
             SDL_RenderFillRect(game->renderer, &platform);

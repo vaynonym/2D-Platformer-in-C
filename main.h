@@ -40,7 +40,7 @@ typedef struct{
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
-    StaticObject platforms[26]; //PLATFORMS
+    StaticObject platforms[42]; //PLATFORMS
     Collectible healthItems[2];
     Collectible pointItems[2];
 
