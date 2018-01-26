@@ -10,7 +10,7 @@
 #include "init.h"
 #include "loadGame.h"
 #include "collisionDetection.h"
-#define GRAVITY 0.32f
+#define GRAVITY 0.5f
 
 
 // Resolution of the game
@@ -64,8 +64,8 @@ bool processEvents(SDL_Window *window, GameState *game){
     // NOTE: groundcollision has to be set on true when the hero touches the ground
     if(game->hero.maxdy < 0){ 
         if(state[SDL_SCANCODE_SPACE] && game->hero.jumping){ // The hero jumps when the user presses up
-            game->hero.dy -= 2;
-            game->hero.maxdy += 1.8; // NOTE: maxdy has to be set on normal when groundcollision becomes true
+            game->hero.dy -= 3;
+            game->hero.maxdy += 2; // NOTE: maxdy has to be set on normal when groundcollision becomes true
         }else{
             game->hero.jumping = false;
         }
@@ -148,7 +148,7 @@ int main(int argc, char* args[]){
         if( !(game.hero.tempX < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
             game.hero.tempX += game.hero.dx; // adjust position of characters according to velocity
         }
-        
+
         // Physics
         game.hero.dy += GRAVITY;
         const Uint8 *state = SDL_GetKeyboardState(NULL);
