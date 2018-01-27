@@ -120,15 +120,24 @@ void doRender(GameState *game){
 }
 
 void movePlatform(GameState *game){
+
     if(game->platforms[9].x > 4550){
         game->platforms[9].moveRight = false;
     }else if(game->platforms[9].x < 3950){
         game->platforms[9].moveRight = true;
     }
     if(game->platforms[9].moveRight){
-        game->platforms[9].x += 6;
+        if(game->hero.onMoving){
+          game->hero.x += 5; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
+          game->hero.onMoving = false;  
+        }
+        game->platforms[9].x += 5;
     }else{
-        game->platforms[9].x -= 6;
+        if(game->hero.onMoving){
+          game->hero.x -= 5;
+          game->hero.onMoving = false;
+        }
+        game->platforms[9].x -= 5;
     }
     //moves paltform[9]
     if(game->platforms[12].y > 300 ){
@@ -137,9 +146,9 @@ void movePlatform(GameState *game){
         game->platforms[12].moveRight = true;
     }
     if(game->platforms[12].moveRight){
-        game->platforms[12].y += 6;
+        game->platforms[12].y += 5;
     }else{
-        game->platforms[12].y -= 6;
+        game->platforms[12].y -= 5;
     }
     //moves platform[12]
 
@@ -149,9 +158,9 @@ void movePlatform(GameState *game){
         game->platforms[13].moveRight = true;
     }
     if(game->platforms[13].moveRight){
-        game->platforms[13].y += 6;
+        game->platforms[13].y += 5;
     }else{
-        game->platforms[13].y -= 6;
+        game->platforms[13].y -= 5;
     }
     //moves platform[13]
 
@@ -161,9 +170,9 @@ void movePlatform(GameState *game){
         game->platforms[20].moveRight = true;                
     }
     if(game->platforms[20].moveRight){
-        game->platforms[20].x += 6;
+        game->platforms[20].x += 5;
     }else{
-        game->platforms[20].x -= 6;
+        game->platforms[20].x -= 5;
     }
     //moves the platform[20]
 }
@@ -233,7 +242,7 @@ int main(int argc, char* args[]){
         detectCollision(&game);
         
         setSpawnpoint(&game);
-        if(game.hero.y > 1000){
+        if(game.hero.y > 1080){
             respawn(&game);
         }
 

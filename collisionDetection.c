@@ -33,6 +33,10 @@ bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
             game->hero.groundCollision = true;
             game->hero.maxdy = -10.0f;
             
+            if(i == 9 || i == 20){
+                game->hero.onMoving = true;
+            }
+            
             if(debug){ 
                 printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
             }

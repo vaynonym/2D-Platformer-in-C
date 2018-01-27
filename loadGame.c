@@ -40,8 +40,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.name = "Hero";
 
     // spawnpoint
-    game->spawnPoint[0].x = 8000;//300
-    game->spawnPoint[0].y = 50;//30
+    game->spawnPoint[0].x = 300;
+    game->spawnPoint[0].y = 30;
     
 
     // loading fonts (currently OpenFont does not work for some reason)
@@ -268,7 +268,7 @@ void loadPlatforms(GameState *game){
     game->platforms[39].x = 10800;
     game->platforms[39].y = 75;
 
-    game->platforms[40].height = 750;
+    game->platforms[40].height = 810;
     game->platforms[40].width = 20;
     game->platforms[40].x = 11400;
     game->platforms[40].y = 75;
@@ -277,7 +277,7 @@ void loadPlatforms(GameState *game){
     game->platforms[41].height = 20;
     game->platforms[41].width = 600;
     game->platforms[41].x = 10800;
-    game->platforms[41].y = 1000;
+    game->platforms[41].y = 1060;
 
     /*
     game->platforms[15].width = 60;
