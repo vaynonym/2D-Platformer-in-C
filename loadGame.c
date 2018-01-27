@@ -46,7 +46,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
 
     // loading fonts (currently OpenFont does not work for some reason)
     
-    game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 16);
+    game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 24);
     
     if(!game->font){
         printf("Cannot find font file");
