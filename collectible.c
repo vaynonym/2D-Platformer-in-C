@@ -30,6 +30,10 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
 
                 if(collectible.increasePoints){
                     game->points = game->points + 1;
+
+                    if(game->points == N_POINTS){
+                        game->isInWinState = true;
+                    }
                 }
                 if(collectible.increaseLives){
                     game->hero.lives = game->hero.lives + 1;

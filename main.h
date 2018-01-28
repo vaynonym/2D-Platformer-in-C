@@ -45,7 +45,7 @@ typedef struct{
 
     int points;
 
-    bool updateHud; // currently only updates lives
+    bool updateHud, isInWinState;
 
     // Objects
     Character hero;
@@ -62,6 +62,9 @@ typedef struct{
     SDL_Texture *sky;
     SDL_Texture *sea;
     SDL_Texture *clouds;
+
+    SDL_Texture *winState;
+    SDL_Texture *respawnHint;
 
     // Fonts
     TTF_Font *font;

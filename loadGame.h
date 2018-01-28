@@ -12,6 +12,8 @@ SDL_Texture* loadTexture(GameState *game, char *path);
 
 void exitGame(int errorCode, char* errorMsg);
 
+void resetGame(GameState *game);
+
 void loadPlatforms(GameState *game); // loads platforms
 
 #endif

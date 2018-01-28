@@ -75,10 +75,48 @@ bool processEvents(SDL_Window *window, GameState *game){
             game->hero.jumping = false;
         }
     }
+
+    if(state[SDL_SCANCODE_R] && game->isInWinState){
+        resetGame(game); //Reset game state
+        resetCollectibles(game); //Reset collectibles
+    }
     return running;
 }
 
 void doRender(GameState *game){
+
+    SDL_RenderClear(game->renderer);
+
+    if(game->isInWinState){
+        SDL_SetRenderDrawColor(game->renderer, 200, 0, 0, 255);
+        SDL_Rect rect = {0, 0, 1920, 1080};
+        SDL_RenderFillRect(game->renderer, &rect);
+
+        int w, h, scale;
+        scale = 10;
+        SDL_QueryTexture(game->winState, NULL, NULL, &w, &h);
+        SDL_Rect rectText = {
+            960-(w*scale*0.5), //center
+            540-(h*scale*0.5), //center
+            w*scale, 
+            h*scale};
+        SDL_RenderCopy(game->renderer, game->winState, NULL, &rectText);
+
+        int w2, h2, scale2;
+
+        scale2 = 4;
+        SDL_QueryTexture(game->respawnHint, NULL, NULL, &w2, &h2);
+        SDL_Rect rectHint = {
+            960-(w2*scale2*0.5), //center 
+            560+(h*scale)-(h2*scale2*0.5), //center with offset of height and 20 pxs
+            w2*scale2, 
+            h2*scale2};
+        SDL_RenderCopy(game->renderer, game->respawnHint, NULL, &rectHint);
+
+        SDL_RenderPresent(game->renderer);
+        return;
+    }
+
     int offset = abs(((int) game->scrollX) * 0.25) % 396; //Sky
 
     for(int i = 0; i < 6; i++){
@@ -225,44 +263,44 @@ int main(int argc, char* args[]){
     loadGame(&game, gameWindow);
     
     while(processEvents(gameWindow, &game)){
-        
-        game.hero.tempX = game.hero.x;
-        game.hero.tempY = game.hero.y;
+        if(!game.isInWinState){        
+            game.hero.tempX = game.hero.x;
+            game.hero.tempY = game.hero.y;
 
 
-        // Physics
-        if(! game.hero.groundCollision && game.hero.dy < 15) // Gravity only applies if the player does not stand on the ground
-            game.hero.dy += GRAVITY;
+            // Physics
+            if(! game.hero.groundCollision && game.hero.dy < 15) // Gravity only applies if the player does not stand on the ground
+                game.hero.dy += GRAVITY;
 
-        const Uint8 *state = SDL_GetKeyboardState(NULL);
-        if(game.hero.dx > 0 && !state[SDL_SCANCODE_D])
-            game.hero.dx -= 1;  
-        else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
-            game.hero.dx += 1; 
-        
-        // The would-be next move
-        game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
-        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
-            game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+            const Uint8 *state = SDL_GetKeyboardState(NULL);
+            if(game.hero.dx > 0 && !state[SDL_SCANCODE_D])
+                game.hero.dx -= 1;  
+            else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
+                game.hero.dx += 1; 
+            
+            // The would-be next move
+            game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
+            if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
+                game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+            }
+
+            detectCollision(&game);
+            
+            if(game.hero.y > height){
+                respawn(&game);
+            }
+
+            game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
+            if (game.scrollX > 0){
+                game.scrollX = 0; // except when he walks further to the left than his spawn point
+            }
+
+            movePlatform(&game);
+
+            testForAllCollectibles(&game);
         }
-
-        detectCollision(&game);
-        
-        if(game.hero.y > height){
-            respawn(&game);
-        }
-
-        game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
-        if (game.scrollX > 0){
-            game.scrollX = 0; // except when he walks further to the left than his spawn point
-        }
-
-        movePlatform(&game);
-
-        testForAllCollectibles(&game);
 
         doRender(&game);
-
     }
     // Clearing all ressources used. Mandatory in C.
     

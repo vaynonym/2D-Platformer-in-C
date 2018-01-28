@@ -38,21 +38,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
         printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
     }
 
-    // hero
-    game->scrollX = 0;
-    game->hero.x = 400;
-    game->hero.y = 300;
-    game->hero.width = 70.0f;//35.0f;
-    game->hero.height = 178.0f;//89.0f;
-    game->hero.dx = 0;
-    game->hero.dy = 0;
-    game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
-    game->hero.jumping = false;
-    game->hero.groundCollision = false;
-    game->hero.lives = 3;
-    game->hero.name = "Hero";
-    game->hero.flip = SDL_FLIP_NONE;
-    game->points = 0;
+    // Reset game state
+    resetGame(game);
 
     // loading of texture
     game->hero.texture = loadTexture(game, "Assets/Textures/hero.png");
@@ -72,6 +59,18 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     if(!game->font){
         exitGame(1, "Cannot find font file");
     }
+
+    // AFTER loading font
+    char msg[10] = "YOU WON!";
+    SDL_Color color = {255, 255, 255, 255};
+    game->winState = createTextureFromString(game, msg, color);
+
+    char msgHint[20] = "PRESS R TO RESPAWN";
+    SDL_Color colorHint = {111, 0, 25, 255};
+    game->respawnHint = createTextureFromString(game, msgHint, colorHint);
+
+
+
     game->livesLabel = NULL;
     game->pointsLabel = NULL;
     initHud(game);
@@ -112,6 +111,24 @@ void exitGame(int errorCode, char* errorMsg){
     printf("\n%s\n", errorMsg);
     SDL_Quit();
     exit(1);
+}
+
+void resetGame(GameState *game){
+    game->scrollX = 0;
+    game->hero.x = 400;
+    game->hero.y = 300;
+    game->hero.width = 70.0f;//35.0f;
+    game->hero.height = 178.0f;//89.0f;
+    game->hero.dx = 0;
+    game->hero.dy = 0;
+    game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
+    game->hero.jumping = false;
+    game->hero.groundCollision = false;
+    game->hero.lives = 3;
+    game->hero.name = "Hero";
+    game->hero.flip = SDL_FLIP_NONE;
+    game->points = 0;
+    game->isInWinState = false;
 }
 
 void loadPlatforms(GameState *game){
@@ -368,6 +385,6 @@ void loadPlatforms(GameState *game){
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
     game->pointItems[1].increaseLives = false;
-    game->pointItems[1].x = 3550;
-    game->pointItems[1].y = 50;
+    game->pointItems[1].x = 3020.0f;
+    game->pointItems[1].y = 450.0f;
 }
