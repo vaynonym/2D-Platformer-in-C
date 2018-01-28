@@ -25,7 +25,7 @@ typedef struct{
 typedef struct{
     int x, y; //coordinates
     int height, width; 
-    bool deadly, visible, collisionFree;
+    bool deadly, collisionFree;
     bool moveRight;
 } StaticObject;
 
