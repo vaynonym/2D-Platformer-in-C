@@ -6,10 +6,12 @@
 #include "SDL_opengl.h"
 #include "SDL_main.h"
 #include "SDL_ttf.h"
+#include <SDL_image.h>
 #include "hud.h"
 #include "loadGame.h"
 #include "main.h"
 #include "collectible.h"
+#include <string.h>
 
 void loadGame(GameState *game, SDL_Window *gameWindow){
     initGame(game, gameWindow);
@@ -24,12 +26,22 @@ void initGame(GameState *game, SDL_Window *gameWindow){
                                                 -1, // index of rendering driver, -1 being the first that supports the requested flags
                                                 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC // requested flags, explained above
                                                 );
+
+    //Initialize renderer color
+    SDL_SetRenderDrawColor( game->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+    int imgFlags = IMG_INIT_PNG;
+    if( !( IMG_Init( imgFlags ) & imgFlags ) )
+    {
+        printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+    }
+
     // hero
     game->scrollX = 0;
     game->hero.x = 400;
     game->hero.y = 300;
-    game->hero.width = 30.0f;
-    game->hero.height = 30.0f;
+    game->hero.width = 60.0f;
+    game->hero.height = 100.0f;
     game->hero.dx = 0;
     game->hero.dy = 0;
     game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
@@ -38,6 +50,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.lives = 3;
     game->hero.points = 0;
     game->hero.name = "Hero";
+    game->hero.texture = loadTexture(game, "Assets/Textures/hero.png");
 
     // spawnpoint
     game->spawnPoint[0].x = 300;
@@ -56,6 +69,33 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->livesLabel = NULL;
     game->timeLabel = NULL;
     initHud(game);
+}
+
+SDL_Texture* loadTexture(GameState *game, char *path)
+{
+    //The final texture
+    SDL_Texture* newTexture = NULL;
+
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if( loadedSurface == NULL )
+    {
+        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
+    }
+    else
+    {
+        //Create texture from surface pixels
+        newTexture = SDL_CreateTextureFromSurface( game->renderer, loadedSurface );
+        if( newTexture == NULL )
+        {
+            printf( "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError() );
+        }
+
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
+    }
+
+    return newTexture;
 }
 
 void loadPlatforms(GameState *game){
