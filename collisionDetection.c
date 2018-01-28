@@ -47,11 +47,12 @@ bool isColliding(GameState *game, double vectorX, double vectorY, bool debug){
         //Standing on ground is not a collision - +- 1 Pixel?
         if(intersection.h == 0 && intersection.w > 0){
             
-            if(vectorY > 0.0f){ // if and only if the player touches the platform from above, i.e. the vector is positive, groundCollission is set to true
-                game->hero.dy = 0.0f;
-                vectorY = 0.0f;
-                game->hero.groundCollision = true;
-                game->hero.maxdy = -10.0f; // was hat maxdy hier zu suchen?
+            if(i == 9 || i == 20){
+                game->hero.onMoving = true;
+            }
+            
+            if(debug){ 
+                printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
             }
 
         }
