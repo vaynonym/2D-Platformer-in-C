@@ -49,23 +49,29 @@ void drawHud(GameState *game){
         game->timeLabel = SDL_CreateTextureFromSurface(game->renderer, tmpTime);
         SDL_FreeSurface(tmpTime);
     }
-    
+
     // draw in white
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
     int w, h; //texture width and height
     // livesLabel
     SDL_QueryTexture(game->livesLabel, NULL, NULL, &w, &h);
-    SDL_Rect livesRect = {200, 30, w, h};
+
+    SDL_Rect rect = {0, 1000, 1920, 80};
+    SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 125);
+    SDL_RenderDrawRect(game->renderer, &rect);
+
+    SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
+
+    SDL_Rect livesRect = {200, 1060-h, w, h};
     SDL_RenderCopy(game->renderer, game->livesLabel, NULL, &livesRect);
     // timeLabel
     SDL_QueryTexture(game->timeLabel, NULL, NULL, &w, &h);
-    SDL_Rect timeRect = {1600, 30, w, h};
+    SDL_Rect timeRect = {1600, 1060-h, w, h};
     SDL_RenderCopy(game->renderer, game->timeLabel, NULL, &timeRect);
     // stageName
     SDL_QueryTexture(game->stageLabel, NULL, NULL, &w, &h);
-    SDL_Rect stageRect = {800, 30, w, h};
+    SDL_Rect stageRect = {800, 1060-h, w, h};
     SDL_RenderCopy(game->renderer, game->stageLabel, NULL, &stageRect);
-
 }
 
 void clearHud(GameState *game){

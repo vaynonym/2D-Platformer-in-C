@@ -24,11 +24,13 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     SDL_RENDERER_PRESENTVSYNC =  synchronized with the refresh rate of the monitor */
     game->renderer = SDL_CreateRenderer(gameWindow, // name of window
                                                 -1, // index of rendering driver, -1 being the first that supports the requested flags
-                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC // requested flags, explained above
+                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC// requested flags, explained above
                                                 );
 
     //Initialize renderer color
     SDL_SetRenderDrawColor( game->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 
     int imgFlags = IMG_INIT_PNG;
     if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -40,8 +42,8 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->scrollX = 0;
     game->hero.x = 400;
     game->hero.y = 300;
-    game->hero.width = 60.0f;
-    game->hero.height = 100.0f;
+    game->hero.width = 70.0f;//35.0f;
+    game->hero.height = 178.0f;//89.0f;
     game->hero.dx = 0;
     game->hero.dy = 0;
     game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
@@ -50,6 +52,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.lives = 3;
     game->hero.points = 0;
     game->hero.name = "Hero";
+    game->hero.flip = SDL_FLIP_NONE;
     game->hero.texture = loadTexture(game, "Assets/Textures/hero.png");
 
     // spawnpoint

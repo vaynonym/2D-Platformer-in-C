@@ -90,7 +90,16 @@ void doRender(GameState *game){
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
 
-    SDL_RenderCopy(game->renderer, game->hero.texture, &heroRectSrc, &heroRect);
+    if(game->hero.dx > 0){
+        game->hero.flip = SDL_FLIP_NONE;
+    }
+    else if(game->hero.dx < 0){
+        game->hero.flip = SDL_FLIP_HORIZONTAL;
+    }
+
+    SDL_RenderCopyEx(game->renderer, game->hero.texture, &heroRectSrc, &heroRect, 0.0, NULL, game->hero.flip);
+
+    //SDL_RenderCopy(game->renderer, game->hero.texture, &heroRectSrc, &heroRect);
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
     for(int i = 0; i < N_PLATFORMS; i++){ //PLATFORMS

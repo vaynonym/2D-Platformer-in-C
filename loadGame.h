@@ -13,4 +13,3 @@ SDL_Texture* loadTexture(GameState *game, char *path);
 void loadPlatforms(GameState *game); // loads platforms
 
 #endif
-

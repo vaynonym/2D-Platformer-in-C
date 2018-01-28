@@ -1,0 +1,8 @@
+.vs
+.vscode
+appData.rc
+compiledAppData.res
+favicon.ico
+main.exe
+Makefile
+Assets/Fonts/JotiOne-Regular.ttf

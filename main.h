@@ -20,6 +20,7 @@ typedef struct{
     char *name;
     int lives, points;
     SDL_Texture *texture; // The texture used for 
+    SDL_RendererFlip flip;
 } Character;
 
 typedef struct{
