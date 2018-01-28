@@ -78,6 +78,10 @@ bool processEvents(SDL_Window *window, GameState *game){
 }
 
 void doRender(GameState *game){
+    //Background
+
+
+
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
     SDL_Rect heroRectSrc = {0, 0, game->hero.width, game->hero.height};
 
@@ -244,7 +248,7 @@ int main(int argc, char* args[]){
     SDL_DestroyRenderer(game.renderer);
     SDL_DestroyWindow(gameWindow);
 
-
+    IMG_Quit();
     TTF_Quit();
     SDL_Quit();
 
