@@ -27,7 +27,7 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
                 if(collectible.increasePoints){
                     //Points
                 }
-                if(collectible.increaseLives && game->hero.lives < 3){
+                if(collectible.increaseLives){
                     game->hero.lives = game->hero.lives + 1;
                 }
             }
