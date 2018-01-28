@@ -73,7 +73,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
         exitGame(1, "Cannot find font file");
     }
     game->livesLabel = NULL;
-    game->timeLabel = NULL;
+    game->pointsLabel = NULL;
     initHud(game);
 }
 
@@ -346,6 +346,7 @@ void loadPlatforms(GameState *game){
     game->platforms[15].x = 3500;
     game->platforms[15].y = 200;
     */
+
     game->healthItems[0].visible = true;
     game->healthItems[0].increasePoints = false;
     game->healthItems[0].increaseLives = true;
@@ -361,8 +362,8 @@ void loadPlatforms(GameState *game){
     game->pointItems[0].visible = true;
     game->pointItems[0].increasePoints = true;
     game->pointItems[0].increaseLives = false;
-    game->pointItems[0].x = 3500;
-    game->pointItems[0].y = 150;
+    game->pointItems[0].x = 3000.0f;
+    game->pointItems[0].y = 450.0f;
 
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;

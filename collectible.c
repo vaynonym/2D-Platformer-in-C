@@ -6,6 +6,10 @@
 #include "main.h"
 #include "collectible.h"
 
+
+
+#include <stdio.h>
+
 void testForAllCollectibles(GameState *game){
     SDL_Rect rectHero = {game->hero.x, game->hero.y, game->hero.width, game->hero.height};
     
@@ -25,8 +29,7 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
                 game->updateHud = true;
 
                 if(collectible.increasePoints){
-                    //game->points = game->points + 1;
-                    (game->points)++;
+                    game->points = game->points + 1;
                 }
                 if(collectible.increaseLives){
                     game->hero.lives = game->hero.lives + 1;

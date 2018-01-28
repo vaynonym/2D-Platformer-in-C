@@ -54,7 +54,6 @@ typedef struct{
 
     // Images
     SDL_Texture *livesLabel;
-    SDL_Texture *timeLabel;
     SDL_Texture *stageLabel;
     SDL_Texture *pointsLabel;
 
