@@ -6,6 +6,7 @@
 #include "SDL_opengl.h"
 #include "SDL_main.h"
 #include "SDL_ttf.h"
+#include <SDL_image.h>
 #include "main.h"
 #include "hud.h"
 #include "loadGame.h"
@@ -77,14 +78,15 @@ bool processEvents(SDL_Window *window, GameState *game){
 }
 
 void doRender(GameState *game){
-
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
+    SDL_Rect heroRectSrc = {0, 0, game->hero.width, game->hero.height};
 
     SDL_SetRenderDrawColor(game->renderer, 0, 0, 255, 255); // sets the color for the renderer to draw in
     SDL_RenderClear(game->renderer); //draws the entire screen with the color set
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
-    SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
+
+    SDL_RenderCopy(game->renderer, game->hero.texture, &heroRectSrc, &heroRect);
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
     for(int i = 0; i < N_PLATFORMS; i++){ //PLATFORMS
