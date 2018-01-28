@@ -2,6 +2,10 @@
 #define MAIN_H
 #include <stdbool.h>
 
+#define N_PLATFORMS 42
+extern const int width; 
+extern const int height;
+extern const int levelWidth;
 
 
 typedef struct{
@@ -40,7 +44,7 @@ typedef struct{
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
-    StaticObject platforms[42]; //PLATFORMS
+    StaticObject platforms[N_PLATFORMS]; //PLATFORMS
     Collectible healthItems[2];
     Collectible pointItems[2];
 
@@ -57,10 +61,6 @@ typedef struct{
 bool processEvents(SDL_Window *window, GameState *game); // handles user input like closing the game, moving the hero etc.
 
 void doRender(GameState *game); // draws everything onto the screen
-
-bool isColliding(GameState *game, float vectorX, float vectorY, bool debug);
-
-void detectCollision(GameState *game);
 
 void respawn(GameState *game);
 
