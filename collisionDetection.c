@@ -143,35 +143,49 @@ void detectCollision(GameState *game){
             double pEdgeBot   = platform.y + platform.height;
             double pEdgeTop   = platform.y;    
 
-            if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeBot && game->hero.dy > 0){ // y position within the platform
-                if(hEdgeLeft < pEdgeRight && hEdgeRight > pEdgeRight && hero.dx < 0){ // hitting from left side
+            if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeBot && game->hero.dy > 0.0f){ // y position within the platform
+                if(hEdgeLeft < pEdgeRight && hEdgeRight > pEdgeRight && hero.dx < 0.0f){ // hitting from right side
                     game->hero.x = pEdgeRight; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
-                    game->hero.dx = 0;
+                    game->hero.dx = 0.0f;
                     collided = true;
                 }
-                else if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeLeft && hero.dx > 0){  // hitting from right side
+                else if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeLeft && hero.dx >0.0f){  // hitting from left side
                     game->hero.x = pEdgeLeft - hero.width; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
-                    game->hero.dx = 0;
+                    game->hero.dx =0.0f;
                     collided = true;
                     }
                 }
+            if(hero.x + hero.width / 2 > pEdgeLeft && hero.x+hero.width/2 < pEdgeRight)
+            {
+            //are we bumping our head?
+                if(hero.y < pEdgeBot && hero.y > pEdgeTop && hero.dy < 0)
+                {
+                    game->hero.y = pEdgeBot;
+                    hEdgeRight = game->hero.x + hero.width; // update the Edges
+                    hEdgeLeft = game->hero.x;
+                    
+                    game->hero.dy = 0;
+                }
+            }
+
+
             if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeRight){ // within x-range
-                if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0){        // hitting from below
+                /*if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0.0f){        // hitting from below
                     game->hero.y = pEdgeBot;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
-                    game->hero.dy = 0; // lose momentum
+                    game->hero.dy =0.0f; // lose momentum
                     collided = true;
                 }
-                else if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy > 0){       // hitting from above
+                else */if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy >0.0f){       // hitting from above
                     game->hero.y = pEdgeTop - hero.height;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
-                    game->hero.dy = 0;
+                    game->hero.dy =0.0f;
                     collided = true;
                     // set groundCollision true, reset maxdy to allow for jumping
                     game->hero.groundCollision = true;
@@ -183,25 +197,18 @@ void detectCollision(GameState *game){
                 printf("respawn");
                 // respawning
             }
-            if(!platform.deadly && hero.groundCollision){
-                // debug:printf("platform.x : %d, platform.y : %d \n", platform.x, platform.y);
-                setSpawnpoint(game, platform);
-            }
         }
     }
 }
 
-void setSpawnpoint(GameState *game, StaticObject platform){
-    if(!platform.moveRight && platform.x + platform.width / 2 > game->spawnPoint[0].x){
-        game->spawnPoint[0].x = platform.x + platform.width / 2;
-        game->spawnPoint[0].y = platform.y - game->hero.height;
-        debug: printf("platform.x : %d , platform.y : %d , setSpawnpoint (%d, %d)\n", platform.x, platform.y, game->spawnPoint[0].x, game->spawnPoint[0].y);
-    }
+void setSpawnpoint (GameState *game, Collectible collectible){
+    game->spawnPoint[0].x = collectible.x + game->hero.width / 2;
+    game->spawnPoint[0].y = collectible.y + game->hero.height;
 }
 
 void respawn(GameState *game){
-    game->hero.dx = 0;
-    game->hero.dy = 0;
+    game->hero.dx =0.0f;
+    game->hero.dy =0.0f;
     game->hero.lives--;
     
     if(game->hero.lives == 0 ){ // gameover. Restarting game.
