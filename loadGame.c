@@ -54,6 +54,9 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.name = "Hero";
     game->hero.flip = SDL_FLIP_NONE;
     game->hero.texture = loadTexture(game, "Assets/Textures/hero.png");
+    game->sky = loadTexture(game, "Assets/Textures/sky.png");
+    game->sea = loadTexture(game, "Assets/Textures/sea.png");
+    game->clouds = loadTexture(game, "Assets/Textures/clouds.png");
 
     // spawnpoint
     game->spawnPoint[0].x = 300;
@@ -62,7 +65,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
 
     // loading fonts (currently OpenFont does not work for some reason)
     
-    game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 24);
+    game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 10);
     
     if(!game->font){
         printf("Cannot find font file");

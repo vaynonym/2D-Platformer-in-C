@@ -12,6 +12,7 @@
 #include "loadGame.h"
 #include "collisionDetection.h"
 #include "collectible.h"
+#include <math.h>
 #define GRAVITY .4
 
 
@@ -78,15 +79,29 @@ bool processEvents(SDL_Window *window, GameState *game){
 }
 
 void doRender(GameState *game){
-    //Background
+    int offset = abs(((int) game->scrollX) * 0.25) % 396; //Sky
 
+    for(int i = 0; i < 6; i++){
+        SDL_Rect skyRepeating = {(396*i)-offset, 0, 396, 1080};
+        SDL_RenderCopy(game->renderer, game->sky, NULL, &skyRepeating);
+    }
+
+    offset = abs(((int) game->scrollX) * 0.40) % 392; //Sea
+
+    for(int i = 0; i < 6; i++){
+        SDL_Rect seaRepeating = {(392*i)-offset, 744, 392, 336};
+        SDL_RenderCopy(game->renderer, game->sea, NULL, &seaRepeating);
+    }
+
+    offset = abs(((int) game->scrollX) * 0.33) % 544; //Clouds
+
+    for(int i = 0; i < 5; i++){
+        SDL_Rect cloudsRepeating = {(544*i)-offset, 508, 544, 236};
+        SDL_RenderCopy(game->renderer, game->clouds, NULL, &cloudsRepeating);
+    }
 
 
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
-    SDL_Rect heroRectSrc = {0, 0, game->hero.width, game->hero.height};
-
-    SDL_SetRenderDrawColor(game->renderer, 0, 0, 255, 255); // sets the color for the renderer to draw in
-    SDL_RenderClear(game->renderer); //draws the entire screen with the color set
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
 
@@ -97,11 +112,11 @@ void doRender(GameState *game){
         game->hero.flip = SDL_FLIP_HORIZONTAL;
     }
 
-    SDL_RenderCopyEx(game->renderer, game->hero.texture, &heroRectSrc, &heroRect, 0.0, NULL, game->hero.flip);
+    SDL_RenderCopyEx(game->renderer, game->hero.texture, NULL/* &heroRectSrc */, &heroRect, 0.0, NULL, game->hero.flip);
 
     //SDL_RenderCopy(game->renderer, game->hero.texture, &heroRectSrc, &heroRect);
 
-    SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(game->renderer, 255, 0, 255, 255);
     for(int i = 0; i < N_PLATFORMS; i++){ //PLATFORMS
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};

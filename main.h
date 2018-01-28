@@ -55,7 +55,9 @@ typedef struct{
     SDL_Texture *timeLabel;
     SDL_Texture *stageLabel;
 
-    SDL_Texture *background;
+    SDL_Texture *sky;
+    SDL_Texture *sea;
+    SDL_Texture *clouds;
 
     // Fonts
     TTF_Font *font;

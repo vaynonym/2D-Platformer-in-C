@@ -9,7 +9,6 @@
 
 
 void initHud(GameState *game){
-
     game->currentStage = "Draftlevel 24601";
     char livesStr[12] = "";
     sprintf(livesStr, "Lives: %d", game->hero.lives);
@@ -24,8 +23,6 @@ void initHud(GameState *game){
     
     SDL_FreeSurface(tmpStageName);
     SDL_FreeSurface(tmpLives);
-
-
 }
 
 void drawHud(GameState *game){
@@ -56,21 +53,23 @@ void drawHud(GameState *game){
     // livesLabel
     SDL_QueryTexture(game->livesLabel, NULL, NULL, &w, &h);
 
-    SDL_Rect rect = {0, 1000, 1920, 80};
-    SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 125);
-    SDL_RenderDrawRect(game->renderer, &rect);
+    int scale = 4;
+
+    SDL_Rect rect = {0, 1040-h*scale, 1920, 40+h*scale};
+    SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(game->renderer, &rect);
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
-    SDL_Rect livesRect = {200, 1060-h, w, h};
+    SDL_Rect livesRect = {200, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->livesLabel, NULL, &livesRect);
     // timeLabel
     SDL_QueryTexture(game->timeLabel, NULL, NULL, &w, &h);
-    SDL_Rect timeRect = {1600, 1060-h, w, h};
+    SDL_Rect timeRect = {1600, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->timeLabel, NULL, &timeRect);
     // stageName
     SDL_QueryTexture(game->stageLabel, NULL, NULL, &w, &h);
-    SDL_Rect stageRect = {800, 1060-h, w, h};
+    SDL_Rect stageRect = {800, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->stageLabel, NULL, &stageRect);
 }
 
