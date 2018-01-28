@@ -7,4 +7,8 @@
 
 void detectCollision(GameState *game);
 
+void setSpawnpoint(GameState *game, StaticObject platform);
+
+void respawn(GameState *game);
+
 #endif
