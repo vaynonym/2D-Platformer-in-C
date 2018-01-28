@@ -6,6 +6,7 @@
 #include "SDL_ttf.h"
 #include "main.h"
 #include "collisionDetection.h"
+#include "collectible.h"
 
 #define ABS(x) (x < 0 ? -x : x)
 
@@ -115,14 +116,21 @@ void detectCollision(GameState *game){
 
 
 
+
+
 void detectCollision(GameState *game){
-    
+    bool collided;
     game->hero.groundCollision = false; // whether the hero is on the ground has to be determined each frame
     for(int i = 0; i < N_PLATFORMS; i++){ // check every platform
+        collided = false;
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // that is visible on the screen
-            
+            // shortcuts
             StaticObject platform = game->platforms[i];
             Character hero = game->hero;
+
+            if(platform.collisionFree) // ignore platforms that should not be collided with
+                continue;
+
             // hero Edges
             double hEdgeRight = hero.x + hero.width;
             double hEdgeLeft  = hero.x;
@@ -141,12 +149,14 @@ void detectCollision(GameState *game){
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
                     game->hero.dx = 0;
+                    collided = true;
                 }
                 else if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeLeft && hero.dx > 0){  // hitting from right side
                     game->hero.x = pEdgeLeft - hero.width; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
                     game->hero.dx = 0;
+                    collided = true;
                     }
                 }
             if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeRight){ // within x-range
@@ -155,17 +165,56 @@ void detectCollision(GameState *game){
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
                     game->hero.dy = 0; // lose momentum
+                    collided = true;
                 }
                 else if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy > 0){       // hitting from above
                     game->hero.y = pEdgeTop - hero.height;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
                     game->hero.dy = 0;
+                    collided = true;
                     // set groundCollision true, reset maxdy to allow for jumping
                     game->hero.groundCollision = true;
                     game->hero.maxdy = -10;
                 }
             }
+            if(collided && platform.deadly){
+                respawn(game);
+                printf("respawn");
+                // respawning
+            }
+            if(!platform.deadly && hero.groundCollision){
+                // debug:printf("platform.x : %d, platform.y : %d \n", platform.x, platform.y);
+                setSpawnpoint(game, platform);
+            }
         }
     }
+}
+
+void setSpawnpoint(GameState *game, StaticObject platform){
+    if(!platform.moveRight && platform.x + platform.width / 2 > game->spawnPoint[0].x){
+        game->spawnPoint[0].x = platform.x + platform.width / 2;
+        game->spawnPoint[0].y = platform.y - game->hero.height;
+        debug: printf("platform.x : %d , platform.y : %d , setSpawnpoint (%d, %d)\n", platform.x, platform.y, game->spawnPoint[0].x, game->spawnPoint[0].y);
+    }
+}
+
+void respawn(GameState *game){
+    game->hero.dx = 0;
+    game->hero.dy = 0;
+    game->hero.lives--;
+    
+    if(game->hero.lives == 0 ){ // gameover. Restarting game.
+        game->hero.x = 400;
+        game->hero.y = 300;
+        game->spawnPoint[0].x = 400;
+        game->spawnPoint[0].y = 300;
+        game->hero.lives = 3;
+        resetCollectibles(game);
+    }
+    else{ // normal respawn
+        game->hero.x = game->spawnPoint[0].x;
+        game->hero.y = game->spawnPoint[0].y;
+    }
+    game->updateHud = true; // update the now changed lives
 }

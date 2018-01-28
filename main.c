@@ -181,34 +181,6 @@ void movePlatform(GameState *game){
     //moves the platform[20]
 }
 
-void setSpawnpoint(GameState *game){
-    if(game->hero.groundCollision && (game->hero.x > game->spawnPoint[0].x + 100)){
-        game->spawnPoint[0].x = game->hero.x;
-        game->spawnPoint[0].y = game->hero.y;
-    }
-}
-// dynamischer spawnpoint
-
-void respawn(GameState *game){
-    game->hero.dx = 0;
-    game->hero.dy = 0;
-    game->hero.lives--;
-    
-    if(game->hero.lives == 0 ){ // gameover. Restarting game.
-        game->hero.x = 400;
-        game->hero.y = 300;
-        game->spawnPoint[0].x = 400;
-        game->spawnPoint[0].y = 300;
-        game->hero.lives = 3;
-        resetCollectibles(game);
-    }
-    else{ // normal respawn
-        game->hero.x = game->spawnPoint[0].x;
-        game->hero.y = game->spawnPoint[0].y;
-    }
-    game->updateHud = true; // update the now changed lives
-}
-
 int main(int argc, char* args[]){
     SDL_Init(SDL_INIT_VIDEO); 
     TTF_Init(); // Initialize Font System
@@ -252,7 +224,6 @@ int main(int argc, char* args[]){
         if(game.hero.y > height){
             respawn(&game);
         }
-        setSpawnpoint(&game);
 
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){

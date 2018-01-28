@@ -100,6 +100,12 @@ SDL_Texture* loadTexture(GameState *game, char *path)
 
 void loadPlatforms(GameState *game){
     // platforms
+    for(int i = 0; i < N_PLATFORMS; i++){
+        game->platforms[i].moveRight = false;
+        game->platforms[i].deadly = false;
+        game->platforms[i].collisionFree = false;
+    }
+
     game->platforms[0].height = 400;
     game->platforms[0].width = 400; //800
     game->platforms[0].x = 400;
@@ -150,7 +156,7 @@ void loadPlatforms(GameState *game){
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
     //moving
-    game->platforms[10].height = 20;
+    game->platforms[10].height =2*20;
     game->platforms[10].width = 45;
     game->platforms[10].x = 4650;
     game->platforms[10].y = 1000;
@@ -172,37 +178,37 @@ void loadPlatforms(GameState *game){
     game->platforms[13].y = 950;
     game->platforms[13].moveRight = false;
     //moving
-    game->platforms[14].height = 20;
+    game->platforms[14].height =2*20;
     game->platforms[14].width = 45;
     game->platforms[14].x = 6200;
     game->platforms[14].y = 850;
     
-    game->platforms[15].height = 20;
+    game->platforms[15].height =2*20;
     game->platforms[15].width = 45;
     game->platforms[15].x = 6200;
     game->platforms[15].y = 700;
 
-    game->platforms[16].height = 20;
+    game->platforms[16].height =2*20;
     game->platforms[16].width = 45;
     game->platforms[16].x = 6200;
     game->platforms[16].y = 550;
 
-    game->platforms[17].height = 20;
+    game->platforms[17].height =2*20;
     game->platforms[17].width = 45;
     game->platforms[17].x = 6200;
     game->platforms[17].y = 400;
 
-    game->platforms[18].height = 20;
+    game->platforms[18].height =2*20;
     game->platforms[18].width = 45;
     game->platforms[18].x = 6200;
     game->platforms[18].y = 250;
 
-    game->platforms[19].height = 20;
+    game->platforms[19].height =2*20;
     game->platforms[19].width = 45;
     game->platforms[19].x = 6200;
     game->platforms[19].y = 100;
     
-    game->platforms[20].height = 20;
+    game->platforms[20].height =2*20;
     game->platforms[20].width = 120;
     game->platforms[20].x = 6400;
     game->platforms[20].y = 100;
@@ -253,47 +259,47 @@ void loadPlatforms(GameState *game){
     game->platforms[28].x = 8600;
     game->platforms[28].y = 340;
     //
-    game->platforms[29].height = 20;
+    game->platforms[29].height =2*20;
     game->platforms[29].width = 200;
     game->platforms[29].x = 9000;
     game->platforms[29].y = 475;
 
-    game->platforms[30].height = 20;
+    game->platforms[30].height =2*20;
     game->platforms[30].width = 200;
     game->platforms[30].x = 9000;
     game->platforms[30].y = 245;
 
-    game->platforms[31].height = 20;
+    game->platforms[31].height = 2*20;
     game->platforms[31].width = 200;
     game->platforms[31].x = 9000;
     game->platforms[31].y = -20;
     //
-    game->platforms[32].height = 20;
+    game->platforms[32].height =2*20;
     game->platforms[32].width = 200;
     game->platforms[32].x = 9400;
     game->platforms[32].y = 475;
 
-    game->platforms[33].height = 20;
+    game->platforms[33].height =2*20;
     game->platforms[33].width = 200;
     game->platforms[33].x = 9400;
     game->platforms[33].y = 245;
 
-    game->platforms[34].height = 20;
+    game->platforms[34].height =2*20;
     game->platforms[34].width = 200;
     game->platforms[34].x = 9400;
     game->platforms[34].y = -20;
     //
-    game->platforms[35].height = 20;
+    game->platforms[35].height =2*20;
     game->platforms[35].width = 200;
     game->platforms[35].x = 9800;
     game->platforms[35].y = 475;
 
-    game->platforms[36].height = 20;
+    game->platforms[36].height =2*20;
     game->platforms[36].width = 200;
     game->platforms[36].x = 9800;
     game->platforms[36].y = 245;
 
-    game->platforms[37].height = 20;
+    game->platforms[37].height =2*20;
     game->platforms[37].width = 200;
     game->platforms[37].x = 9800;
     game->platforms[37].y = -20;
@@ -303,18 +309,18 @@ void loadPlatforms(GameState *game){
     game->platforms[38].x = 10400;
     game->platforms[38].y = 75;
 
-    game->platforms[39].height = 20;
+    game->platforms[39].height =2*20;
     game->platforms[39].width = 600;
     game->platforms[39].x = 10800;
     game->platforms[39].y = 75;
 
     game->platforms[40].height = 810;
-    game->platforms[40].width = 20;
+    game->platforms[40].width =2*20;
     game->platforms[40].x = 11400;
     game->platforms[40].y = 75;
     game->platforms[40].deadly = true;
 
-    game->platforms[41].height = 20;
+    game->platforms[41].height =2*20;
     game->platforms[41].width = 600;
     game->platforms[41].x = 10800;
     game->platforms[41].y = 1060;

@@ -25,7 +25,7 @@ typedef struct{
 typedef struct{
     int x, y; //coordinates
     int height, width; 
-    bool deadly, visible;
+    bool deadly, visible, collisionFree;
     bool moveRight;
 } StaticObject;
 
@@ -63,8 +63,5 @@ bool processEvents(SDL_Window *window, GameState *game); // handles user input l
 
 void doRender(GameState *game); // draws everything onto the screen
 
-void respawn(GameState *game);
-
-void setSpawnpoint(GameState *game);
 
 #endif
