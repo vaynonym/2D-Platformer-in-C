@@ -7,17 +7,19 @@
 #include "SDL_main.h"
 #include "SDL_ttf.h"
 #include "main.h"
-#include "init.h"
+#include "hud.h"
 #include "loadGame.h"
 #include "collisionDetection.h"
 #include "collectible.h"
-#define GRAVITY 0.32f
+#define GRAVITY .4
 
 
 // Resolution of the game
 const int width = 1920; 
 const int height = 1080;
 const int levelWidth = 12000;
+
+
 
 bool processEvents(SDL_Window *window, GameState *game){
     SDL_Event event;
@@ -49,12 +51,12 @@ bool processEvents(SDL_Window *window, GameState *game){
     //alternative, better way of getting which Key is pressed:
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     if(state[SDL_SCANCODE_A]){
-        if(game->hero.dx > -6){ // if the playerCharacter has not exceeded the maximum (negative for left) velocity, increase the current velocity
+        if(game->hero.dx > -10){ // if the playerCharacter has not exceeded the maximum (negative for left) velocity, increase the current velocity
             game->hero.dx -= 2;
         }
     }
     if(state[SDL_SCANCODE_D]){
-        if(game->hero.dx < 6){ // if the playerCharacter has not exceeded the maximum (positive for right) velocity, increase the current velocity
+        if(game->hero.dx < 10){ // if the playerCharacter has not exceeded the maximum (positive for right) velocity, increase the current velocity
             game->hero.dx += 2;
         }
     }
@@ -85,7 +87,7 @@ void doRender(GameState *game){
     SDL_RenderFillRect(game->renderer, &heroRect); // draw the rectangle in new color
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
-    for(int i = 0; i < 42; i++){ //PLATFORMS
+    for(int i = 0; i < N_PLATFORMS; i++){ //PLATFORMS
         if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
             SDL_RenderFillRect(game->renderer, &platform);
@@ -217,25 +219,29 @@ int main(int argc, char* args[]){
         game.hero.tempX = game.hero.x;
         game.hero.tempY = game.hero.y;
 
-        if( !(game.hero.tempX < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
-            game.hero.tempX += game.hero.dx; // adjust position of characters according to velocity
-        }
 
         // Physics
-        game.hero.dy += GRAVITY;
+        if(! game.hero.groundCollision && game.hero.dy < 15) // Gravity only applies if the player does not stand on the ground
+            game.hero.dy += GRAVITY;
+
         const Uint8 *state = SDL_GetKeyboardState(NULL);
         if(game.hero.dx > 0 && !state[SDL_SCANCODE_D])
-            game.hero.dx -= 2;  
+            game.hero.dx -= 1;  
         else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
-            game.hero.dx += 2; 
-        game.hero.tempY += game.hero.dy; //for now, the player can leave the screen vertically
-        game.hero.tempX += game.hero.dx;
+            game.hero.dx += 1; 
+        
+        // The would-be next move
+        game.hero.y += game.hero.dy; //for now, the player can leave the screen vertically
+        if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
+            game.hero.x += game.hero.dx; // adjust position of characters according to velocity
+        }
+
         detectCollision(&game);
         
-        setSpawnpoint(&game);
-        if(game.hero.y > 1000){
+        if(game.hero.y > height){
             respawn(&game);
         }
+        setSpawnpoint(&game);
 
         game.scrollX = -game.hero.x + width / 2; // the hero is always at the center of the screen (horizontally)
         if (game.scrollX > 0){
