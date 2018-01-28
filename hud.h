@@ -12,4 +12,6 @@ void drawHud(GameState *game);
 
 void clearHud(GameState *game);
 
+SDL_Texture* createTextureFromString(GameState *game, char* text);
+
 #endif

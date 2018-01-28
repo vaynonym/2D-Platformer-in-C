@@ -50,9 +50,11 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->hero.jumping = false;
     game->hero.groundCollision = false;
     game->hero.lives = 3;
-    game->hero.points = 0;
     game->hero.name = "Hero";
     game->hero.flip = SDL_FLIP_NONE;
+    game->points = 0;
+
+    // loading of texture
     game->hero.texture = loadTexture(game, "Assets/Textures/hero.png");
     game->sky = loadTexture(game, "Assets/Textures/sky.png");
     game->sea = loadTexture(game, "Assets/Textures/sea.png");
@@ -358,13 +360,13 @@ void loadPlatforms(GameState *game){
 
     game->pointItems[0].visible = true;
     game->pointItems[0].increasePoints = true;
-    game->pointItems[0].increaseLives = true;
+    game->pointItems[0].increaseLives = false;
     game->pointItems[0].x = 3500;
     game->pointItems[0].y = 150;
 
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
-    game->pointItems[1].increaseLives = true;
+    game->pointItems[1].increaseLives = false;
     game->pointItems[1].x = 3550;
     game->pointItems[1].y = 50;
 }

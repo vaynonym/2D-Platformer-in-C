@@ -25,7 +25,8 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
                 game->updateHud = true;
 
                 if(collectible.increasePoints){
-                    //Points
+                    //game->points = game->points + 1;
+                    (game->points)++;
                 }
                 if(collectible.increaseLives){
                     game->hero.lives = game->hero.lives + 1;
@@ -36,7 +37,7 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
 }
 
 void resetCollectibles(GameState *game){
-    game->hero.points = 0;
+    game->points = 0;
 
     for(int i = 0; i < 2; i++){
         game->pointItems[i].visible = true;

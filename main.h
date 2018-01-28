@@ -18,7 +18,7 @@ typedef struct{
     bool onMoving; // hero stands on a moving platform
     bool groundCollision; // Does the character currently touch the ground?
     char *name;
-    int lives, points;
+    int lives;
     SDL_Texture *texture; // The texture used for 
     SDL_RendererFlip flip;
 } Character;
@@ -41,6 +41,8 @@ typedef struct{
     char *currentStage;
     SDL_Renderer *renderer;
 
+    int points;
+
     bool updateHud; // currently only updates lives
 
     // Objects
@@ -54,6 +56,7 @@ typedef struct{
     SDL_Texture *livesLabel;
     SDL_Texture *timeLabel;
     SDL_Texture *stageLabel;
+    SDL_Texture *pointsLabel;
 
     SDL_Texture *sky;
     SDL_Texture *sea;
