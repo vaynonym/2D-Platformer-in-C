@@ -8,6 +8,8 @@ void loadGame(GameState *game, SDL_Window *gameWindow); // a function that calls
 
 void initGame(GameState *game, SDL_Window *gameWindow); // loads the fundamental parts of the game: renderer, character, etc.
 
+SDL_Texture* loadTexture(GameState *game, char *path);
+
 void loadPlatforms(GameState *game); // loads platforms
 
 #endif
