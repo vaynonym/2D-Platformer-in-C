@@ -7,7 +7,7 @@
 
 void detectCollision(GameState *game);
 
-void setSpawnpoint(GameState *game, StaticObject platform);
+void setSpawnpoint(GameState *game, Collectible collectible);
 
 void respawn(GameState *game);
 
