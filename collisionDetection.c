@@ -7,7 +7,25 @@
 #include "main.h"
 #include "collisionDetection.h"
 
-bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
+#define ABS(x) (x < 0 ? -x : x)
+
+// current Problems:
+/*
+- the hero can jump after hitting a platform from below, continiously pressing him against the platform until he leaves it from the x-coordinate resulting in a normal jump
+  presumably this is because groundCollission is set on true independently of whether the hero hits a platform from below or above
+  this could be checked by looking at whether dy of the hero is positive or negative (?)
+- the hero's y coordinate is not adjusted when pressing against a platform from the side. This only applies if the player continuously pressed against the platform.
+  this presumably means the y-coordinate is not adjusted if the player's x movement would cause him to be inside the platform/hit the platform
+  however, we want the y coordinate to always be adjusted by dy if it would not cause the player to be inside a platform. 
+  all the while dy is continuously increasing, just not being added to the y position of the hero.
+
+
+*/
+/*
+
+// old attempt
+
+bool isColliding(GameState *game, double vectorX, double vectorY, bool debug){
     for(int i = 0; i < 42; i++){ //PLATFORMS
         StaticObject platform = game->platforms[i];
 
@@ -28,16 +46,16 @@ bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
 
         //Standing on ground is not a collision - +- 1 Pixel?
         if(intersection.h == 0 && intersection.w > 0){
-            game->hero.dy = 0.0f;
-            vectorY = 0.0f;
-            game->hero.groundCollision = true;
-            game->hero.maxdy = -10.0f;
             
-            if(debug){ 
-                printf("x: %d y: %d w: %d h: %d\n",intersection.x, intersection.y, intersection.w, intersection.h);
+            if(vectorY > 0.0f){ // if and only if the player touches the platform from above, i.e. the vector is positive, groundCollission is set to true
+                game->hero.dy = 0.0f;
+                vectorY = 0.0f;
+                game->hero.groundCollision = true;
+                game->hero.maxdy = -10.0f; // was hat maxdy hier zu suchen?
             }
+
         }
-        else if(intersection.w > 0 && intersection.h > 0){
+        else if(intersection.h > 0 && intersection.w > 0){
             return true;
         }
     }
@@ -45,21 +63,21 @@ bool isColliding(GameState *game, float vectorX, float vectorY, bool debug){
 }
 
 void detectCollision(GameState *game){
-    
-    /*
-    SET VALUES HERE TO AVOID ROUNDING DIFFERENCES
-    */
+
+
+    // tempX and tempY are the coordinates the hero would end up at with the current movement
+    // hero.x and hero.y are the coordinates of the hero from the last frame
 
     //Vector approximation
-    float vectorX, vectorY, scaledVectorX, scaledVectorY;
-    vectorX = game->hero.tempX - game->hero.x;
-    vectorY = game->hero.tempY - game->hero.y;
-    int scalingFactor, scalingStart;
+    double vectorX, vectorY, scaledVectorX, scaledVectorY;
+    vectorX = game->hero.tempX - game->hero.x; // the movement vector for the x coordinate
+    vectorY = game->hero.tempY - game->hero.y; // the movement vector for the y coordinate
+    double scalingFactor, scalingStart;
 
     game->hero.groundCollision = false;
 
     //Validating movement
-    if(!isColliding(game, vectorX, vectorY,false)){
+    if(!isColliding(game, vectorX, vectorY, false)){
         game->hero.x = game->hero.tempX;
         if(!game->hero.groundCollision) 
             game->hero.y = game->hero.tempY;
@@ -68,19 +86,19 @@ void detectCollision(GameState *game){
     game->hero.groundCollision = false;
 
     //Otherwise trying to scale vector to keep heading unless vector is zero vector
-    scalingStart = scalingFactor = (int) (vectorX > vectorY ? vectorX : vectorY);
+    scalingStart = scalingFactor = (vectorX > vectorY ? vectorX : vectorY);
     //Vector with scalingFactor 1 got already tested as trivial case
     while(scalingFactor > 1){
         scalingFactor--;
-        scaledVectorX = (vectorX / (float)scalingStart) * scalingFactor;
-        scaledVectorY = (vectorY / (float)scalingStart) * scalingFactor;
+        scaledVectorX = (vectorX / scalingStart) * scalingFactor;
+        scaledVectorY = (vectorY / scalingStart) * scalingFactor;
 
-        if(!isColliding(game, scaledVectorX, scaledVectorY,false)){
+        if(! isColliding(game, scaledVectorX, scaledVectorY, false)){ // if the hero does not collide with any object with the new vector, scaling completed
             //Scaled vector points to no collision
-            game->hero.x = game->hero.x + scaledVectorX;
-            if(!game->hero.groundCollision) 
-                game->hero.y = game->hero.y + scaledVectorY;
-            return;
+            game->hero.x = game->hero.x + scaledVectorX; 
+            if(!game->hero.groundCollision) // if the hero does not collide with the ground, he will keep moving in Y direction. 
+                game->hero.y = game->hero.y + scaledVectorY; // Question: When does ground collission apply? It should only apply when the hero hits a platform from above or below, then.
+            return; // since the hero gets stuck in the y direction when he hits a platform from the side, I presume 
         }
     }
 
@@ -89,5 +107,64 @@ void detectCollision(GameState *game){
     if(isColliding(game, 0.0f, 0.0f,true)){
         //Respawn
         respawn(game);
+    }
+}
+
+*/
+
+
+
+void detectCollision(GameState *game){
+    
+    game->hero.groundCollision = false; // whether the hero is on the ground has to be determined each frame
+    for(int i = 0; i < N_PLATFORMS; i++){ // check every platform
+        if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // that is visible on the screen
+            
+            StaticObject platform = game->platforms[i];
+            Character hero = game->hero;
+            // hero Edges
+            double hEdgeRight = hero.x + hero.width;
+            double hEdgeLeft  = hero.x;
+            double hEdgeBot   = hero.y + hero.height;
+            double hEdgeTop   = hero.y;
+
+            // platform Edges
+            double pEdgeRight = platform.x + platform.width;
+            double pEdgeLeft  = platform.x;
+            double pEdgeBot   = platform.y + platform.height;
+            double pEdgeTop   = platform.y;    
+
+            if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeBot && game->hero.dy > 0){ // y position within the platform
+                if(hEdgeLeft < pEdgeRight && hEdgeRight > pEdgeRight && hero.dx < 0){ // hitting from left side
+                    game->hero.x = pEdgeRight; // put hero outside of box
+                    hEdgeRight = game->hero.x + hero.width; // update the Edges
+                    hEdgeLeft = game->hero.x;
+                    game->hero.dx = 0;
+                }
+                else if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeLeft && hero.dx > 0){  // hitting from right side
+                    game->hero.x = pEdgeLeft - hero.width; // put hero outside of box
+                    hEdgeRight = game->hero.x + hero.width; // update the Edges
+                    hEdgeLeft = game->hero.x;
+                    game->hero.dx = 0;
+                    }
+                }
+            if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeRight){ // within x-range
+                if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0){        // hitting from below
+                    game->hero.y = pEdgeBot;
+                    hEdgeBot   = game->hero.y + hero.height;
+                    hEdgeTop   = game->hero.y;
+                    game->hero.dy = 0; // lose momentum
+                }
+                else if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy > 0){       // hitting from above
+                    game->hero.y = pEdgeTop - hero.height;
+                    hEdgeBot   = game->hero.y + hero.height;
+                    hEdgeTop   = game->hero.y;
+                    game->hero.dy = 0;
+                    // set groundCollision true, reset maxdy to allow for jumping
+                    game->hero.groundCollision = true;
+                    game->hero.maxdy = -10;
+                }
+            }
+        }
     }
 }
