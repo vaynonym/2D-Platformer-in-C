@@ -68,9 +68,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->font = TTF_OpenFont("Assets/Fonts/comicsans.ttf", 10);
     
     if(!game->font){
-        printf("Cannot find font file");
-        SDL_Quit();
-        exit(1);
+        exitGame(1, "Cannot find font file");
     }
     game->livesLabel = NULL;
     game->timeLabel = NULL;
@@ -84,17 +82,21 @@ SDL_Texture* loadTexture(GameState *game, char *path)
 
     //Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load(path);
-    if( loadedSurface == NULL )
+    if(loadedSurface == NULL)
     {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
+        char msg[64];
+        sprintf(msg, "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError());
+        exitGame(1, msg);
     }
     else
     {
         //Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface( game->renderer, loadedSurface );
-        if( newTexture == NULL )
+        newTexture = SDL_CreateTextureFromSurface(game->renderer, loadedSurface);
+        if(newTexture == NULL)
         {
-            printf( "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError() );
+            char msg[64];
+            sprintf(msg, "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError());
+            exitGame(1, msg);
         }
 
         //Get rid of old loaded surface
@@ -102,6 +104,12 @@ SDL_Texture* loadTexture(GameState *game, char *path)
     }
 
     return newTexture;
+}
+
+void exitGame(int errorCode, char* errorMsg){
+    printf("\n%s\n", errorMsg);
+    SDL_Quit();
+    exit(1);
 }
 
 void loadPlatforms(GameState *game){
