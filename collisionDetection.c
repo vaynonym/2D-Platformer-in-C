@@ -206,8 +206,6 @@ void respawn(GameState *game){
     game->hero.lives--;
     
     if(game->hero.lives == 0 ){ // gameover. Restarting game.
-        game->spawnPoint[0].x = 400;
-        game->spawnPoint[0].y = 300;
         resetGame(game);
     }
     else{ // normal respawn
