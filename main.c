@@ -189,7 +189,7 @@ void doRender(GameState *game){
 }
 
 void movePlatform(GameState *game){
-
+    /*
     if(game->platforms[9].x > 4550){
         game->platforms[9].moveRight = false;
     }else if(game->platforms[9].x < 3950){
@@ -207,11 +207,11 @@ void movePlatform(GameState *game){
           game->hero.onMoving = false;
         }
         game->platforms[9].x -= 5;
-    }
+    }*/
     //moves paltform[9]
-    if(game->platforms[12].y > 300 ){
+    if(game->platforms[12].y > 200 ){
         game->platforms[12].moveRight = false;
-    }else if(game->platforms[12].y < 100){
+    }else if(game->platforms[12].y < 0){
         game->platforms[12].moveRight = true;
     }
     if(game->platforms[12].moveRight){
@@ -221,7 +221,7 @@ void movePlatform(GameState *game){
     }
     //moves platform[12]
 
-    if(game->platforms[13].y > 950){
+    if(game->platforms[13].y > 1080){
         game->platforms[13].moveRight = false;
     }else if(game->platforms[13].y < 750){
         game->platforms[13].moveRight = true;
@@ -232,7 +232,7 @@ void movePlatform(GameState *game){
         game->platforms[13].y -= 5;
     }
     //moves platform[13]
-
+    /*
     if(7500 < game->platforms[20].x){
         game->platforms[20].moveRight = false;
     }else if(game->platforms[20].x < 6400){
@@ -242,7 +242,7 @@ void movePlatform(GameState *game){
         game->platforms[20].x += 5;
     }else{
         game->platforms[20].x -= 5;
-    }
+    }*/
     //moves the platform[20]
 }
 

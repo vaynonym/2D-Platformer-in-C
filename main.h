@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define N_PLATFORMS 42
-#define N_POINTS 2
+#define N_POINTS 20
 #define N_HEALTH 2
 
 extern const int width; 
