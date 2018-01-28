@@ -7,6 +7,7 @@
 #include "main.h"
 #include "collisionDetection.h"
 #include "collectible.h"
+#include "loadGame.h"
 
 #define ABS(x) (x < 0 ? -x : x)
 
@@ -212,12 +213,7 @@ void respawn(GameState *game){
     game->hero.lives--;
     
     if(game->hero.lives == 0 ){ // gameover. Restarting game.
-        game->hero.x = 400;
-        game->hero.y = 300;
-        game->spawnPoint[0].x = 400;
-        game->spawnPoint[0].y = 300;
-        game->hero.lives = 3;
-        resetCollectibles(game);
+        resetGame(game);
     }
     else{ // normal respawn
         game->hero.x = game->spawnPoint[0].x;

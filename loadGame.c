@@ -129,6 +129,8 @@ void resetGame(GameState *game){
     game->hero.flip = SDL_FLIP_NONE;
     game->points = 0;
     game->isInWinState = false;
+    game->spawnPoint[0].x = 400;
+    game->spawnPoint[0].y = 300;
 }
 
 void loadPlatforms(GameState *game){
