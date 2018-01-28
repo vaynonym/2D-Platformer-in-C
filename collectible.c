@@ -4,6 +4,7 @@
 #include "SDL_main.h"
 #include "SDL_ttf.h"
 #include "main.h"
+#include "collisionDetection.h"
 #include "collectible.h"
 
 
@@ -34,6 +35,7 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
                     if(game->points == N_POINTS){
                         game->isInWinState = true;
                     }
+                    setSpawnpoint(game, collectibles[i]);
                 }
                 if(collectible.increaseLives){
                     game->hero.lives = game->hero.lives + 1;
