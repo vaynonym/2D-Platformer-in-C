@@ -13,8 +13,8 @@
 void testForAllCollectibles(GameState *game){
     SDL_Rect rectHero = {game->hero.x, game->hero.y, game->hero.width, game->hero.height};
     
-    testForCollectibles(rectHero, game, 2, game->healthItems);
-    testForCollectibles(rectHero, game, 2, game->pointItems);
+    testForCollectibles(rectHero, game, N_HEALTH, game->healthItems);
+    testForCollectibles(rectHero, game, N_POINTS, game->pointItems);
 }
 
 void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectible *collectibles){
@@ -42,10 +42,10 @@ void testForCollectibles(SDL_Rect rectHero, GameState *game, int max, Collectibl
 void resetCollectibles(GameState *game){
     game->points = 0;
 
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < N_POINTS; i++){
         game->pointItems[i].visible = true;
     }
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < N_HEALTH; i++){
         game->healthItems[i].visible = true;
     }
 }

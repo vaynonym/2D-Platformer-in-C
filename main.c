@@ -127,7 +127,7 @@ void doRender(GameState *game){
 
     SDL_SetRenderDrawColor(game->renderer, 255, 0, 0, 255);
 
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < N_HEALTH; i++){
         Collectible collectible = game->healthItems[i];
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
@@ -137,7 +137,7 @@ void doRender(GameState *game){
 
     SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
 
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < N_POINTS; i++){
         Collectible collectible = game->pointItems[i];
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
@@ -148,7 +148,6 @@ void doRender(GameState *game){
     drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
-    game->time = game->time + 1;
 }
 
 void movePlatform(GameState *game){

@@ -3,6 +3,9 @@
 #include <stdbool.h>
 
 #define N_PLATFORMS 42
+#define N_POINTS 2
+#define N_HEALTH 2
+
 extern const int width; 
 extern const int height;
 extern const int levelWidth;
@@ -37,7 +40,6 @@ typedef struct {
 
 typedef struct{
     float scrollX; // determines the part of the stage the hero/ player sees
-    int time;
     char *currentStage;
     SDL_Renderer *renderer;
 
@@ -49,8 +51,8 @@ typedef struct{
     Character hero;
     StaticObject spawnPoint[1];
     StaticObject platforms[N_PLATFORMS]; //PLATFORMS
-    Collectible healthItems[2];
-    Collectible pointItems[2];
+    Collectible healthItems[N_HEALTH];
+    Collectible pointItems[N_POINTS];
 
     // Images
     SDL_Texture *livesLabel;
