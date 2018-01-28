@@ -6,7 +6,7 @@
 #include "SDL_opengl.h"
 #include "SDL_main.h"
 #include "SDL_ttf.h"
-#include "init.h"
+#include "hud.h"
 #include "loadGame.h"
 #include "main.h"
 #include "collectible.h"
@@ -75,37 +75,37 @@ void loadPlatforms(GameState *game){
     game->platforms[2].x = 2400;
     game->platforms[2].y = 900;
 
-    game->platforms[3].height = 20;
-    game->platforms[3].width = 60;
+    game->platforms[3].height = 2*20;
+    game->platforms[3].width = 2*60;
     game->platforms[3].x = 3000;
     game->platforms[3].y = 950;
 
-    game->platforms[4].height = 20;
-    game->platforms[4].width = 60;
+    game->platforms[4].height = 2*20;
+    game->platforms[4].width = 2*60;
     game->platforms[4].x = 3000;
     game->platforms[4].y = 650;
 
-    game->platforms[5].height = 20;
-    game->platforms[5].width = 60;
+    game->platforms[5].height = 2*20;
+    game->platforms[5].width = 2*60;
     game->platforms[5].x = 3000;
     game->platforms[5].y = 350;
 
-    game->platforms[6].height = 20;
-    game->platforms[6].width = 60;
+    game->platforms[6].height = 2*20;
+    game->platforms[6].width = 2*60;
     game->platforms[6].x = 3500;
     game->platforms[6].y = 800;
 
-    game->platforms[7].height = 20;
-    game->platforms[7].width = 60;
+    game->platforms[7].height = 2*20;
+    game->platforms[7].width = 2*60;
     game->platforms[7].x = 3500;
     game->platforms[7].y = 500;
 
-    game->platforms[8].height = 20;
-    game->platforms[8].width = 60;
+    game->platforms[8].height = 2*20;
+    game->platforms[8].width = 2*60;
     game->platforms[8].x = 3500;
     game->platforms[8].y = 200;
 
-    game->platforms[9].height = 20;
+    game->platforms[9].height = 2*20;
     game->platforms[9].width = 120;
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
