@@ -1,0 +1,24 @@
+id ICON "favicon.ico"
+1 VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName", "Early Access Inc."
+      VALUE "FileDescription", "M'xcllnt gm"
+      VALUE "FileVersion", "1.0"
+      VALUE "InternalName", "platformer"
+      VALUE "LegalCopyright", "Simon, Tim, Daniel"
+      VALUE "OriginalFilename", "pepeh.exe"
+      VALUE "ProductName", "Xcllnt gm"
+      VALUE "ProductVersion", "1.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END

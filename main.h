@@ -2,6 +2,13 @@
 #define MAIN_H
 #include <stdbool.h>
 
+#define N_PLATFORMS 42
+#define N_POINTS 2
+#define N_HEALTH 2
+
+extern const int width; 
+extern const int height;
+extern const int levelWidth;
 
 
 typedef struct{
@@ -11,35 +18,58 @@ typedef struct{
     float dx, dy; // Current Velocity
     float maxdy; //maximum vertical velocity
     bool jumping;
+    bool onMoving; // hero stands on a moving platform
     bool groundCollision; // Does the character currently touch the ground?
     char *name;
     int lives;
     SDL_Texture *texture; // The texture used for 
+    SDL_RendererFlip flip;
 } Character;
 
 typedef struct{
     int x, y; //coordinates
     int height, width; 
-    bool deadly, visible;
+    bool deadly, collisionFree;
+    bool moveRight;
+    SDL_Rect textureBox;
+    float additionTop;
+    SDL_RendererFlip flip;
 } StaticObject;
+
+typedef struct {
+    bool visible, increasePoints, increaseLives;
+    float x, y;
+} Collectible;
 
 typedef struct{
     float scrollX; // determines the part of the stage the hero/ player sees
-    int time;
     char *currentStage;
     SDL_Renderer *renderer;
 
-    bool updateHud; // currently only updates lives
+    int points;
+
+    bool updateHud, isInWinState;
 
     // Objects
     Character hero;
     StaticObject spawnPoint[1];
-    StaticObject platforms[12]; //PLATFORMS
+    StaticObject platforms[N_PLATFORMS]; //PLATFORMS
+    Collectible healthItems[N_HEALTH];
+    Collectible pointItems[N_POINTS];
 
     // Images
     SDL_Texture *livesLabel;
-    SDL_Texture *timeLabel;
     SDL_Texture *stageLabel;
+    SDL_Texture *pointsLabel;
+
+    SDL_Texture *sky;
+    SDL_Texture *sea;
+    SDL_Texture *clouds;
+
+    SDL_Texture *winState;
+    SDL_Texture *respawnHint;
+
+    SDL_Texture *textureSet;
 
     // Fonts
     TTF_Font *font;
@@ -50,12 +80,5 @@ bool processEvents(SDL_Window *window, GameState *game); // handles user input l
 
 void doRender(GameState *game); // draws everything onto the screen
 
-bool isColliding(GameState *game, float vectorX, float vectorY, bool debug);
-
-void detectCollision(GameState *game);
-
-void respawn(GameState *game);
-
-void setSpawnpoint(GameState *game);
 
 #endif

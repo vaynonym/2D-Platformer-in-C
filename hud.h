@@ -1,5 +1,5 @@
-#ifndef INIT_H
-#define INIT_H
+#ifndef HUD_H
+#define HUD_H
 #include "main.h"
 
 
@@ -11,5 +11,7 @@ void initHud(GameState *game);
 void drawHud(GameState *game);
 
 void clearHud(GameState *game);
+
+SDL_Texture* createTextureFromString(GameState *game, char* text, SDL_Color color);
 
 #endif
