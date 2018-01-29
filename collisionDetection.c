@@ -9,6 +9,8 @@
 #include "collectible.h"
 #include "loadGame.h"
 
+//
+
 #define ABS(x) (x < 0 ? -x : x)
 
 // current Problems:
@@ -144,45 +146,50 @@ void detectCollision(GameState *game){
             double pEdgeBot   = platform.y + platform.height;
             double pEdgeTop   = platform.y;    
 
-            if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeBot && game->hero.dy > 0.0f){ // y position within the platform
+            if(hEdgeBot > pEdgeTop + 1 && hEdgeTop < pEdgeBot - 1){ // y position within the platform
                 if(hEdgeLeft < pEdgeRight && hEdgeRight > pEdgeRight && hero.dx < 0.0f){ // hitting from right side
+                    printf("hitting from right side\n");
                     game->hero.x = pEdgeRight; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
                     game->hero.dx = 0.0f;
                     collided = true;
                 }
-                else if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeLeft && hero.dx >0.0f){  // hitting from left side
-                    game->hero.x = pEdgeLeft - hero.width; // put hero outside of box
+                else if(hEdgeRight  > pEdgeLeft && hEdgeLeft  < pEdgeLeft && hero.dx > 0.0f){
+                    printf("hitting from left side\n");  // hitting from left side
+                    game->hero.x = pEdgeLeft - hero.width ; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
                     game->hero.dx =0.0f;
                     collided = true;
                     }
                 }
+                /*
             if(hero.x + hero.width / 2 > pEdgeLeft && hero.x+hero.width/2 < pEdgeRight)
             {
             //are we bumping our head?
                 if(hero.y < pEdgeBot && hero.y > pEdgeTop && hero.dy < 0)
                 {
-                    game->hero.y = pEdgeBot;
+                    game->hero.y = pEdgeBot +;
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
                     
                     game->hero.dy = 0;
                 }
-            }
+            }*/
 
 
-            if(hEdgeRight > pEdgeLeft && hEdgeLeft < pEdgeRight){ // within x-range
-                /*if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0.0f){        // hitting from below
+            if(hEdgeRight > pEdgeLeft + 1 && hEdgeLeft < pEdgeRight - 1){ // within x-range
+                if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0.0f){ 
+                    printf("hitting from below\n");       // hitting from below
                     game->hero.y = pEdgeBot;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
                     game->hero.dy =0.0f; // lose momentum
                     collided = true;
                 }
-                else */if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy >0.0f){       // hitting from above
+                else if(hEdgeBot > pEdgeTop && hEdgeTop < pEdgeTop && game->hero.dy >0.0f){
+                         // hitting from above
                     game->hero.y = pEdgeTop - hero.height;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
