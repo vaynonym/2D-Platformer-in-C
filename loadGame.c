@@ -131,6 +131,7 @@ void resetGame(GameState *game){
     game->isInWinState = false;
     game->spawnPoint[0].x = 400;
     game->spawnPoint[0].y = 300;
+    resetCollectibles(game);
 }
 
 void loadPlatforms(GameState *game){
