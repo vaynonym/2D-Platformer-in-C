@@ -33,6 +33,7 @@ typedef struct{
     bool moveRight;
     SDL_Rect textureBox;
     float additionTop;
+    SDL_RendererFlip flip;
 } StaticObject;
 
 typedef struct {

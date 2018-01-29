@@ -144,6 +144,7 @@ void loadPlatforms(GameState *game){
         game->platforms[i].additionTop = 0.0f;
         game->platforms[i].width = 0;
         game->platforms[i].height = 0;
+        game->platforms[i].flip = SDL_FLIP_NONE;
     }
 
     game->platforms[0].height = 400;
@@ -159,6 +160,7 @@ void loadPlatforms(GameState *game){
     game->platforms[1].x = 1200;
     game->platforms[1].y = 750;
     game->platforms[1].textureBox = tB;
+    game->platforms[1].additionTop = 30.0f;
 
     game->platforms[2].height = 100;
     game->platforms[2].width = 400;
@@ -216,12 +218,18 @@ void loadPlatforms(GameState *game){
     game->platforms[12].x = 5900;
     game->platforms[12].y = 0;
     game->platforms[12].moveRight = true;
+    SDL_Rect tB2 = {400,43,16,96};
+    game->platforms[12].flip = SDL_FLIP_VERTICAL;
+    game->platforms[12].textureBox = tB2;
     //moving
     game->platforms[13].height = 100;
     game->platforms[13].width = 45;
     game->platforms[13].x = 5900;
     game->platforms[13].y = 1080;
     game->platforms[13].moveRight = false;
+    SDL_Rect tB3 = {400,43,16,16};
+    game->platforms[13].additionTop = 10.0f;
+    game->platforms[13].textureBox = tB3;
     //moving
     
     game->platforms[14].height =2*20;
@@ -401,6 +409,6 @@ void loadPlatforms(GameState *game){
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
     game->pointItems[1].increaseLives = false;
-    game->pointItems[1].x = 3020.0f;
+    game->pointItems[1].x = 4020.0f;
     game->pointItems[1].y = 450.0f;
 }
