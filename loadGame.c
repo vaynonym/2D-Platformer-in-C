@@ -162,12 +162,15 @@ void loadPlatforms(GameState *game){
     game->platforms[1].textureBox = tB;
     game->platforms[1].additionTop = 30.0f;
 
+    SDL_Rect smallPlatform = {304,186,32,22};
+    SDL_Rect smallLowPlatform = {304,186,32,11};
+
     game->platforms[2].height = 100;
     game->platforms[2].width = 400;
     game->platforms[2].x = 2400;
     game->platforms[2].y = 900;
     
-    game->platforms[3].height = 1 ;
+    game->platforms[3].height = 1;
     game->platforms[3].width = 1;
     game->platforms[3].x = - 400;
     game->platforms[3].y = -400;
@@ -176,11 +179,13 @@ void loadPlatforms(GameState *game){
     game->platforms[4].width = 2*60;
     game->platforms[4].x = 3000;
     game->platforms[4].y = 800;
+    game->platforms[4].textureBox = smallPlatform;
 
     game->platforms[5].height = 2*20;
     game->platforms[5].width = 2*60;
     game->platforms[5].x = 3000;
     game->platforms[5].y = 400;
+    game->platforms[5].textureBox = smallPlatform;
     
     game->platforms[6].height = 20;
     game->platforms[6].width = 60;
@@ -191,11 +196,13 @@ void loadPlatforms(GameState *game){
     game->platforms[7].width = 2*60;
     game->platforms[7].x = 3500;
     game->platforms[7].y = 600;
+    game->platforms[7].textureBox = smallPlatform;    
 
     game->platforms[8].height = 2*20;
     game->platforms[8].width = 2*60;
     game->platforms[8].x = 3500;
     game->platforms[8].y = 200;
+    game->platforms[8].textureBox = smallPlatform;
 
     game->platforms[9].height = 2*20;
     game->platforms[9].width = 700;

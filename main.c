@@ -138,6 +138,7 @@ void doRender(GameState *game){
         SDL_RenderCopy(game->renderer, game->clouds, NULL, &cloudsRepeating);
     }
 
+    drawHud(game);
 
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
 
@@ -164,7 +165,7 @@ void doRender(GameState *game){
             else {
                 platform.y -= platformObject.additionTop;
                 platform.h += platformObject.additionTop;
-                SDL_RenderCopy(game->renderer, game->textureSet, &platformObject.textureBox, &platform);
+                SDL_RenderCopyEx(game->renderer, game->textureSet, &platformObject.textureBox, &platform, 0.0, NULL, platformObject.flip);
             }
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
@@ -191,8 +192,6 @@ void doRender(GameState *game){
             }
         }
     }
-
-    drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
