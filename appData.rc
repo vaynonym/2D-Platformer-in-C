@@ -7,13 +7,13 @@ BEGIN
   BEGIN
     BLOCK "040904E4"
     BEGIN
-      VALUE "CompanyName", "My Company Name"
-      VALUE "FileDescription", "My excellent application"
+      VALUE "CompanyName", "Early Access Inc."
+      VALUE "FileDescription", "M'xcllnt gm"
       VALUE "FileVersion", "1.0"
-      VALUE "InternalName", "my_app"
-      VALUE "LegalCopyright", "My Name"
-      VALUE "OriginalFilename", "my_app.exe"
-      VALUE "ProductName", "My App"
+      VALUE "InternalName", "platformer"
+      VALUE "LegalCopyright", "Simon, Tim, Daniel"
+      VALUE "OriginalFilename", "pepeh.exe"
+      VALUE "ProductName", "Xcllnt gm"
       VALUE "ProductVersion", "1.0"
     END
   END
