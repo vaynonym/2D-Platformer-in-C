@@ -24,8 +24,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     SDL_RENDERER_PRESENTVSYNC =  synchronized with the refresh rate of the monitor */
     game->renderer = SDL_CreateRenderer(gameWindow, // name of window
                                                 -1, // index of rendering driver, -1 being the first that supports the requested flags
-                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC// requested flags, explained above
-                                                );
+                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     //Initialize renderer color
     SDL_SetRenderDrawColor( game->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -46,6 +45,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->sky = loadTexture(game, "Assets/Textures/sky.png");
     game->sea = loadTexture(game, "Assets/Textures/sea.png");
     game->clouds = loadTexture(game, "Assets/Textures/clouds.png");
+    game->textureSet = loadTexture(game, "Assets/Textures/tileset.png");
 
     // spawnpoint
     game->spawnPoint[0].x = 300;
@@ -139,17 +139,26 @@ void loadPlatforms(GameState *game){
         game->platforms[i].moveRight = false;
         game->platforms[i].deadly = false;
         game->platforms[i].collisionFree = false;
+        SDL_Rect rect = {0,0,0,0};
+        game->platforms[i].textureBox = rect;
+        game->platforms[i].additionTop = 0.0f;
+        game->platforms[i].width = 0;
+        game->platforms[i].height = 0;
     }
 
     game->platforms[0].height = 400;
     game->platforms[0].width = 400;
     game->platforms[0].x = 400;
     game->platforms[0].y = 880;
+    SDL_Rect tB = {192,186,48,38};
+    game->platforms[0].textureBox = tB;
+    game->platforms[0].additionTop = 30.0f;
 
     game->platforms[1].height = 400;
     game->platforms[1].width = 600;
     game->platforms[1].x = 1200;
     game->platforms[1].y = 750;
+    game->platforms[1].textureBox = tB;
 
     game->platforms[2].height = 100;
     game->platforms[2].width = 400;

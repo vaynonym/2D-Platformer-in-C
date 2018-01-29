@@ -150,19 +150,26 @@ void doRender(GameState *game){
         game->hero.flip = SDL_FLIP_HORIZONTAL;
     }
 
-    SDL_RenderCopyEx(game->renderer, game->hero.texture, NULL/* &heroRectSrc */, &heroRect, 0.0, NULL, game->hero.flip);
-
-    //SDL_RenderCopy(game->renderer, game->hero.texture, &heroRectSrc, &heroRect);
-
+    SDL_RenderCopyEx(game->renderer, game->hero.texture, NULL, &heroRect, 0.0, NULL, game->hero.flip);
+    
+    
     SDL_SetRenderDrawColor(game->renderer, 255, 0, 255, 255);
     for(int i = 0; i < N_PLATFORMS; i++){ //PLATFORMS
-        if(game->platforms[i].x + game->scrollX - game->platforms[i].width <= width){ // only draw platforms which are visible on the screen
-            SDL_Rect platform = {game->platforms[i].x + game->scrollX, game->platforms[i].y, game->platforms[i].width, game->platforms[i].height};
-            SDL_RenderFillRect(game->renderer, &platform);
+        StaticObject platformObject = game->platforms[i];
+        if(platformObject.x + game->scrollX - platformObject.width <= width){ // only draw platforms which are visible on the screen
+            SDL_Rect platform = {platformObject.x + game->scrollX, platformObject.y, platformObject.width, platformObject.height};
+            if(platformObject.textureBox.w == 0 || platformObject.textureBox.h == 0){
+                SDL_RenderFillRect(game->renderer, &platform);
+            }
+            else {
+                platform.y -= platformObject.additionTop;
+                platform.h += platformObject.additionTop;
+                SDL_RenderCopy(game->renderer, game->textureSet, &platformObject.textureBox, &platform);
+            }
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
     }
-
+    
     SDL_SetRenderDrawColor(game->renderer, 255, 0, 0, 255);
 
     for(int i = 0; i < N_HEALTH; i++){
@@ -172,14 +179,16 @@ void doRender(GameState *game){
             SDL_RenderFillRect(game->renderer, &rectCollectible);
         }
     }
-
+    
     SDL_SetRenderDrawColor(game->renderer, 0, 255, 0, 255);
 
     for(int i = 0; i < N_POINTS; i++){
         Collectible collectible = game->pointItems[i];
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
-            SDL_RenderFillRect(game->renderer, &rectCollectible);
+            if(rectCollectible.x != 0 && rectCollectible.y != 0){
+                SDL_RenderFillRect(game->renderer, &rectCollectible);
+            }
         }
     }
 

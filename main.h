@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define N_PLATFORMS 42
-#define N_POINTS 20
+#define N_POINTS 2
 #define N_HEALTH 2
 
 extern const int width; 
@@ -31,6 +31,8 @@ typedef struct{
     int height, width; 
     bool deadly, collisionFree;
     bool moveRight;
+    SDL_Rect textureBox;
+    float additionTop;
 } StaticObject;
 
 typedef struct {
@@ -65,6 +67,8 @@ typedef struct{
 
     SDL_Texture *winState;
     SDL_Texture *respawnHint;
+
+    SDL_Texture *textureSet;
 
     // Fonts
     TTF_Font *font;
