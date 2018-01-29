@@ -155,12 +155,12 @@ void loadPlatforms(GameState *game){
     game->platforms[2].width = 400;
     game->platforms[2].x = 2400;
     game->platforms[2].y = 900;
-    /*
-    game->platforms[3].height = 2*20;
-    game->platforms[3].width = 2*60;
-    game->platforms[3].x = 3000;
-    game->platforms[3].y = 950;
-    */
+    
+    game->platforms[3].height = 1 ;
+    game->platforms[3].width = 1;
+    game->platforms[3].x = - 400;
+    game->platforms[3].y = -400;
+    
     game->platforms[4].height = 2*20;
     game->platforms[4].width = 2*60;
     game->platforms[4].x = 3000;
@@ -170,12 +170,12 @@ void loadPlatforms(GameState *game){
     game->platforms[5].width = 2*60;
     game->platforms[5].x = 3000;
     game->platforms[5].y = 400;
-    /*
-    game->platforms[6].height = 2*20;
-    game->platforms[6].width = 2*60;
-    game->platforms[6].x = 3500;
-    game->platforms[6].y = 800;
-    */
+    
+    game->platforms[6].height = 20;
+    game->platforms[6].width = 60;
+    game->platforms[6].x = -200;
+    game->platforms[6].y = -300;
+    
     game->platforms[7].height = 2*20;
     game->platforms[7].width = 2*60;
     game->platforms[7].x = 3500;
@@ -191,12 +191,12 @@ void loadPlatforms(GameState *game){
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
     //moving
-    /*
+    
     game->platforms[10].height =2*20;
     game->platforms[10].width = 45;
-    game->platforms[10].x = 4650;
-    game->platforms[10].y = 1000;
-    */
+    game->platforms[10].x = -4650;
+    game->platforms[10].y = -1000;
+
     game->platforms[11].height = 100;
     game->platforms[11].width = 700;
     game->platforms[11].x = 5150;
@@ -214,17 +214,17 @@ void loadPlatforms(GameState *game){
     game->platforms[13].y = 1080;
     game->platforms[13].moveRight = false;
     //moving
-    /*
+    
     game->platforms[14].height =2*20;
     game->platforms[14].width = 45;
-    game->platforms[14].x = 6200;
-    game->platforms[14].y = 850;
+    game->platforms[14].x = -6200;
+    game->platforms[14].y = -850;
     
     game->platforms[15].height =2*20;
     game->platforms[15].width = 45;
-    game->platforms[15].x = 6200;
-    game->platforms[15].y = 700;
-    */
+    game->platforms[15].x = -6200;
+    game->platforms[15].y = -700;
+
     game->platforms[16].height =2*20;
     game->platforms[16].width = 105;
     game->platforms[16].x = 6200;
