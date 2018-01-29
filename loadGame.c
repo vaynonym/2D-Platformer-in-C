@@ -409,6 +409,6 @@ void loadPlatforms(GameState *game){
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
     game->pointItems[1].increaseLives = false;
-    game->pointItems[1].x = 4020.0f;
-    game->pointItems[1].y = 450.0f;
+    game->pointItems[1].x = 11000.0f;
+    game->pointItems[1].y = 800.0f;
 }
