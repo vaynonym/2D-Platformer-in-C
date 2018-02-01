@@ -159,7 +159,10 @@ void doRender(GameState *game){
         StaticObject platformObject = game->platforms[i];
         if(platformObject.x + game->scrollX - platformObject.width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {platformObject.x + game->scrollX, platformObject.y, platformObject.width, platformObject.height};
-            if(platformObject.textureBox.w == 0 || platformObject.textureBox.h == 0){
+            if(platformObject.deadly){
+                SDL_RenderCopyEx(game->renderer, game->spike, NULL, &platform, 0.0, NULL, SDL_FLIP_NONE);
+            }
+            else if(platformObject.textureBox.w == 0 || platformObject.textureBox.h == 0){
                 SDL_RenderFillRect(game->renderer, &platform);
             }
             else {

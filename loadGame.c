@@ -46,6 +46,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->sea = loadTexture(game, "Assets/Textures/sea.png");
     game->clouds = loadTexture(game, "Assets/Textures/clouds.png");
     game->textureSet = loadTexture(game, "Assets/Textures/tileset.png");
+    game->spike = loadTexture(game, "Assets/Textures/spike.png");
 
     // spawnpoint
     game->spawnPoint[0].x = 300;
