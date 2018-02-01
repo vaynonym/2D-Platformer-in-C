@@ -217,6 +217,7 @@ void loadPlatforms(GameState *game){
     game->platforms[9].width = 150;//700
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
+    game->platforms[9].textureBox = smallPlatform;
     game->platforms[9].moveRight = true;
     //moving
     
@@ -229,6 +230,8 @@ void loadPlatforms(GameState *game){
     game->platforms[11].width = 700;
     game->platforms[11].x = 5150;
     game->platforms[11].y = 1000;
+    SDL_Rect longPlatform = {191, 187, 7, 49};
+    game->platforms[11].textureBox = longPlatform; 
     
     game->platforms[12].height = 600;
     game->platforms[12].width = 45;
@@ -261,28 +264,34 @@ void loadPlatforms(GameState *game){
 
     game->platforms[16].height =2*20;
     game->platforms[16].width = 105;
+    SDL_Rect slong = {191, 187, 16, 49};
     game->platforms[16].x = 6200;
     game->platforms[16].y = 960;
+    game->platforms[16].textureBox = slong;
     
     game->platforms[17].height =2*20;
     game->platforms[17].width = 105;
     game->platforms[17].x = 6350;
     game->platforms[17].y = 785;
+    game->platforms[17].textureBox = slong;
 
     game->platforms[18].height =2*20;
     game->platforms[18].width = 105;
     game->platforms[18].x = 6500;
     game->platforms[18].y = 610;
+    game->platforms[18].textureBox = slong;
 
     game->platforms[19].height =2*20;
     game->platforms[19].width = 105;
     game->platforms[19].x = 6650;
     game->platforms[19].y = 435;
-    
+    game->platforms[19].textureBox = slong;
+    SDL_Rect platform5To1 = {240,240,64,13};
     game->platforms[20].height =2*20;
     game->platforms[20].width = 1250;
     game->platforms[20].x = 6750;
     game->platforms[20].y = 260;
+    game->platforms[20].textureBox = platform5To1;
     game->platforms[20].moveRight = true;
     //moving
     game->platforms[21].height = 30;
@@ -319,18 +328,21 @@ void loadPlatforms(GameState *game){
     game->platforms[26].width = 500;
     game->platforms[26].x = 8000;
     game->platforms[26].y = 100;
+    game->platforms[26].textureBox = platform5To1;
 
     game->platforms[27].height = 860;
     game->platforms[27].width = 200;
     game->platforms[27].x = 8500;
     game->platforms[27].y = 220;
+    game->platforms[27].textureBox = platform5To1;
 
     game->platforms[28].height = 740;
     game->platforms[28].width = 200;
     game->platforms[28].x = 8650;
     game->platforms[28].y = 340;
+    game->platforms[28].textureBox = platform5To1;
     
-    SDL_Rect platform5To1 = {240,240,64,13};
+    
 
     game->platforms[29].height =2*20;
     game->platforms[29].width = 200;
@@ -393,6 +405,7 @@ void loadPlatforms(GameState *game){
     game->platforms[38].width = 400;
     game->platforms[38].x = 10400;
     game->platforms[38].y = 75;
+    game->platforms[38].textureBox = platform5To1;
 
     game->platforms[39].height =2*20;
     game->platforms[39].width = 640;
