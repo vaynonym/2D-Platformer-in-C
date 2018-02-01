@@ -148,7 +148,6 @@ void detectCollision(GameState *game){
 
             if(hEdgeBot > pEdgeTop + 1 && hEdgeTop < pEdgeBot - 1){ // y position within the platform
                 if(hEdgeLeft < pEdgeRight && hEdgeRight > pEdgeRight && hero.dx < 0.0f){ // hitting from right side
-                    printf("hitting from right side\n");
                     game->hero.x = pEdgeRight; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
@@ -156,7 +155,7 @@ void detectCollision(GameState *game){
                     collided = true;
                 }
                 else if(hEdgeRight  > pEdgeLeft && hEdgeLeft  < pEdgeLeft && hero.dx > 0.0f){
-                    printf("hitting from left side\n");  // hitting from left side
+                    // hitting from left side
                     game->hero.x = pEdgeLeft - hero.width ; // put hero outside of box
                     hEdgeRight = game->hero.x + hero.width; // update the Edges
                     hEdgeLeft = game->hero.x;
@@ -181,7 +180,7 @@ void detectCollision(GameState *game){
 
             if(hEdgeRight > pEdgeLeft + 1 && hEdgeLeft < pEdgeRight - 1){ // within x-range
                 if(hEdgeTop < pEdgeBot && hEdgeTop > pEdgeTop && game->hero.dy < 0.0f){ 
-                    printf("hitting from below\n");       // hitting from below
+       // hitting from below
                     game->hero.y = pEdgeBot;
                     hEdgeBot   = game->hero.y + hero.height;
                     hEdgeTop   = game->hero.y;
