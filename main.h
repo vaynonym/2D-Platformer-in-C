@@ -73,6 +73,7 @@ typedef struct{
 
     SDL_Texture *spike;
     SDL_Texture *point;
+    SDL_Texture *heart;
 
     // Fonts
     TTF_Font *font;
