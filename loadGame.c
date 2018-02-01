@@ -399,7 +399,7 @@ void loadPlatforms(GameState *game){
     game->platforms[39].y = 75;
     game->platforms[39].textureBox = platform5To1;
 
-    game->platforms[40].height = 510;
+    game->platforms[40].height = 610;
     game->platforms[40].width =2*20;
     game->platforms[40].x = 11400;
     game->platforms[40].y = 115;
@@ -411,23 +411,17 @@ void loadPlatforms(GameState *game){
     game->platforms[41].y = 1060;
     game->platforms[41].textureBox = platform5To1;
 
-    /*
-    game->platforms[15].width = 60;
-    game->platforms[15].x = 3500;
-    game->platforms[15].y = 200;
-    */
-
     game->healthItems[0].visible = true;
     game->healthItems[0].increasePoints = false;
     game->healthItems[0].increaseLives = true;
-    game->healthItems[0].x = 3000.0f;
-    game->healthItems[0].y = 450.0f;
+    game->healthItems[0].x = 5600.0f;
+    game->healthItems[0].y = 800.0f;
 
     game->healthItems[1].visible = true;
     game->healthItems[1].increasePoints = false;
     game->healthItems[1].increaseLives = true;
-    game->healthItems[1].x = 3500;
-    game->healthItems[1].y = 750;
+    game->healthItems[1].x = 11200;
+    game->healthItems[1].y = 25;
 
     game->pointItems[0].visible = true;
     game->pointItems[0].increasePoints = true;
@@ -438,6 +432,24 @@ void loadPlatforms(GameState *game){
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
     game->pointItems[1].increaseLives = false;
-    game->pointItems[1].x = 11000.0f;
+    game->pointItems[1].x = 5750.0f;
     game->pointItems[1].y = 800.0f;
+    
+    game->pointItems[2].visible = true;
+    game->pointItems[2].increasePoints = true;
+    game->pointItems[2].increaseLives = false;
+    game->pointItems[2].x = 11099.0f;
+    game->pointItems[2].y = 25.0f;
+
+    game->pointItems[3].visible = true;
+    game->pointItems[3].increasePoints = true;
+    game->pointItems[3].increaseLives = false;
+    game->pointItems[3].x = 11100.0f;
+    game->pointItems[3].y = -150.0f;
+
+    game->pointItems[4].visible = true;
+    game->pointItems[4].increasePoints = true;
+    game->pointItems[4].increaseLives = false;
+    game->pointItems[4].x = 11000.0f;
+    game->pointItems[4].y = 800.0f;
 }
