@@ -198,6 +198,9 @@ void detectCollision(GameState *game){
                     // set groundCollision true, reset maxdy to allow for jumping
                     game->hero.groundCollision = true;
                     game->hero.maxdy = -10;
+                    if(i == 9){
+                        game->hero.onMoving = true;
+                    }
                 }
             }
             if(collided && platform.deadly){
