@@ -197,7 +197,7 @@ void doRender(GameState *game){
 }
 
 void movePlatform(GameState *game){
-    /*
+    
     if(game->platforms[9].x > 4550){
         game->platforms[9].moveRight = false;
     }else if(game->platforms[9].x < 3950){
@@ -205,17 +205,17 @@ void movePlatform(GameState *game){
     }
     if(game->platforms[9].moveRight){
         if(game->hero.onMoving){
-          game->hero.x += 5; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
+          game->hero.x += 4; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
           game->hero.onMoving = false;  
         }
-        game->platforms[9].x += 5;
+        game->platforms[9].x += 4;
     }else{
         if(game->hero.onMoving){
-          game->hero.x -= 5;
+          game->hero.x -= 4;
           game->hero.onMoving = false;
         }
-        game->platforms[9].x -= 5;
-    }*/
+        game->platforms[9].x -= 4;
+    }
     //moves paltform[9]
     if(game->platforms[12].y > 200 ){
         game->platforms[12].moveRight = false;
@@ -281,9 +281,11 @@ int main(int argc, char* args[]){
                 game.hero.dy += GRAVITY;
 
             const Uint8 *state = SDL_GetKeyboardState(NULL);
-            if(game.hero.dx > 0 && !state[SDL_SCANCODE_D])
-                game.hero.dx -= 1;  
-            else if(game.hero.dx < 0 && !state[SDL_SCANCODE_A])
+            
+            if((game.hero.dx > 0 && !state[SDL_SCANCODE_D]) && !game.hero.onMoving){
+                game.hero.dx -= 1;
+            }
+            else if((game.hero.dx < 0 && !state[SDL_SCANCODE_A]) && !game.hero.onMoving)
                 game.hero.dx += 1; 
             
             // The would-be next move

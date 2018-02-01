@@ -206,9 +206,10 @@ void loadPlatforms(GameState *game){
     game->platforms[8].textureBox = smallPlatform;
 
     game->platforms[9].height = 2*20;
-    game->platforms[9].width = 700;
+    game->platforms[9].width = 150;//700
     game->platforms[9].x = 3950;
     game->platforms[9].y = 100;
+    game->platforms[9].moveRight = true;
     //moving
     
     game->platforms[10].height =2*20;
