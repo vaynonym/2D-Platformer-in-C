@@ -160,7 +160,7 @@ void doRender(GameState *game){
         if(platformObject.x + game->scrollX - platformObject.width <= width){ // only draw platforms which are visible on the screen
             SDL_Rect platform = {platformObject.x + game->scrollX, platformObject.y, platformObject.width, platformObject.height};
             if(platformObject.deadly){
-                SDL_RenderCopyEx(game->renderer, game->spike, NULL, &platform, 0.0, NULL, SDL_FLIP_NONE);
+                SDL_RenderCopy(game->renderer, game->spike, NULL, &platform);
             }
             else if(platformObject.textureBox.w == 0 || platformObject.textureBox.h == 0){
                 SDL_RenderFillRect(game->renderer, &platform);
@@ -191,7 +191,7 @@ void doRender(GameState *game){
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
             if(rectCollectible.x != 0 && rectCollectible.y != 0){
-                SDL_RenderFillRect(game->renderer, &rectCollectible);
+                SDL_RenderCopy(game->renderer, game->point, NULL, &rectCollectible);
             }
         }
     }
