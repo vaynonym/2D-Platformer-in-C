@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define N_PLATFORMS 42
-#define N_POINTS 2
+#define N_POINTS 5
 #define N_HEALTH 2
 
 extern const int width; 
@@ -73,6 +73,7 @@ typedef struct{
 
     SDL_Texture *spike;
     SDL_Texture *point;
+    SDL_Texture *heart;
 
     // Fonts
     TTF_Font *font;

@@ -48,6 +48,7 @@ void initGame(GameState *game, SDL_Window *gameWindow){
     game->textureSet = loadTexture(game, "Assets/Textures/tileset.png");
     game->spike = loadTexture(game, "Assets/Textures/spike.png");
     game->point = loadTexture(game, "Assets/Textures/point.png");
+    game->heart = loadTexture(game, "Assets/Textures/heart.png");
 
     // spawnpoint
     game->spawnPoint[0].x = 300;
@@ -173,6 +174,9 @@ void loadPlatforms(GameState *game){
     game->platforms[2].width = 400;
     game->platforms[2].x = 2400;
     game->platforms[2].y = 900;
+    SDL_Rect tB2 = {192,186,48,12};
+    game->platforms[2].textureBox = tB2;
+    game->platforms[2].additionTop = 30.0f;
     
     game->platforms[3].height = 1;
     game->platforms[3].width = 1;
@@ -195,6 +199,7 @@ void loadPlatforms(GameState *game){
     game->platforms[6].width = 60;
     game->platforms[6].x = -200;
     game->platforms[6].y = -300;
+    game->platforms[6].textureBox = smallLowPlatform;
     
     game->platforms[7].height = 2*20;
     game->platforms[7].width = 2*60;
@@ -230,18 +235,18 @@ void loadPlatforms(GameState *game){
     game->platforms[12].x = 5900;
     game->platforms[12].y = 0;
     game->platforms[12].moveRight = true;
-    SDL_Rect tB2 = {400,43,16,96};
+    SDL_Rect tB3 = {400,43,16,96};
     game->platforms[12].flip = SDL_FLIP_VERTICAL;
-    game->platforms[12].textureBox = tB2;
+    game->platforms[12].textureBox = tB3;
     //moving
     game->platforms[13].height = 100;
     game->platforms[13].width = 45;
     game->platforms[13].x = 5900;
     game->platforms[13].y = 1080;
     game->platforms[13].moveRight = false;
-    SDL_Rect tB3 = {400,43,16,16};
+    SDL_Rect tB4 = {400,43,16,16};
     game->platforms[13].additionTop = 10.0f;
-    game->platforms[13].textureBox = tB3;
+    game->platforms[13].textureBox = tB4;
     //moving
     
     game->platforms[14].height =2*20;
@@ -324,54 +329,65 @@ void loadPlatforms(GameState *game){
     game->platforms[28].width = 200;
     game->platforms[28].x = 8650;
     game->platforms[28].y = 340;
-    //
+    
+    SDL_Rect platform5To1 = {240,240,64,13};
+
     game->platforms[29].height =2*20;
     game->platforms[29].width = 200;
     game->platforms[29].x = 9000;
     game->platforms[29].y = 475;
+    game->platforms[29].textureBox = platform5To1;
 
     game->platforms[30].height =2*20;
     game->platforms[30].width = 200;
     game->platforms[30].x = 9000;
     game->platforms[30].y = 245;
     game->platforms[30].collisionFree = true;
+    game->platforms[30].textureBox = platform5To1;
 
     game->platforms[31].height = 2*20;
     game->platforms[31].width = 200;
     game->platforms[31].x = 9000;
     game->platforms[31].y = -40;
+    game->platforms[31].textureBox = platform5To1;
     //
     game->platforms[32].height =2*20;
     game->platforms[32].width = 200;
     game->platforms[32].x = 9400;
     game->platforms[32].y = 475;
+    game->platforms[32].textureBox = platform5To1;
 
     game->platforms[33].height =2*20;
     game->platforms[33].width = 200;
     game->platforms[33].x = 9400;
     game->platforms[33].y = 245;
     game->platforms[33].collisionFree = true;
+    game->platforms[33].textureBox = platform5To1;
 
     game->platforms[34].height =2*20;
     game->platforms[34].width = 200;
     game->platforms[34].x = 9400;
     game->platforms[34].y = -40;
+    game->platforms[34].textureBox = platform5To1;
     //
     game->platforms[35].height =2*20;
     game->platforms[35].width = 200;
     game->platforms[35].x = 9800;
     game->platforms[35].y = 475;
+    game->platforms[35].textureBox = platform5To1;
 
     game->platforms[36].height =2*20;
     game->platforms[36].width = 200;
     game->platforms[36].x = 9800;
     game->platforms[36].y = 245;
     game->platforms[36].collisionFree = true;
+    game->platforms[36].textureBox = platform5To1;
 
     game->platforms[37].height =2*20;
     game->platforms[37].width = 200;
     game->platforms[37].x = 9800;
     game->platforms[37].y = -40;
+    game->platforms[37].textureBox = platform5To1;
     //
     game->platforms[38].height = 1005;
     game->platforms[38].width = 400;
@@ -382,8 +398,9 @@ void loadPlatforms(GameState *game){
     game->platforms[39].width = 640;
     game->platforms[39].x = 10800;
     game->platforms[39].y = 75;
+    game->platforms[39].textureBox = platform5To1;
 
-    game->platforms[40].height = 510;
+    game->platforms[40].height = 610;
     game->platforms[40].width =2*20;
     game->platforms[40].x = 11400;
     game->platforms[40].y = 115;
@@ -393,24 +410,19 @@ void loadPlatforms(GameState *game){
     game->platforms[41].width = 600;
     game->platforms[41].x = 10800;
     game->platforms[41].y = 1060;
-
-    /*
-    game->platforms[15].width = 60;
-    game->platforms[15].x = 3500;
-    game->platforms[15].y = 200;
-    */
+    game->platforms[41].textureBox = platform5To1;
 
     game->healthItems[0].visible = true;
     game->healthItems[0].increasePoints = false;
     game->healthItems[0].increaseLives = true;
-    game->healthItems[0].x = 3000.0f;
-    game->healthItems[0].y = 450.0f;
+    game->healthItems[0].x = 5600.0f;
+    game->healthItems[0].y = 800.0f;
 
     game->healthItems[1].visible = true;
     game->healthItems[1].increasePoints = false;
     game->healthItems[1].increaseLives = true;
-    game->healthItems[1].x = 3500;
-    game->healthItems[1].y = 750;
+    game->healthItems[1].x = 11200;
+    game->healthItems[1].y = 25;
 
     game->pointItems[0].visible = true;
     game->pointItems[0].increasePoints = true;
@@ -421,6 +433,24 @@ void loadPlatforms(GameState *game){
     game->pointItems[1].visible = true;
     game->pointItems[1].increasePoints = true;
     game->pointItems[1].increaseLives = false;
-    game->pointItems[1].x = 11000.0f;
+    game->pointItems[1].x = 5750.0f;
     game->pointItems[1].y = 800.0f;
+    
+    game->pointItems[2].visible = true;
+    game->pointItems[2].increasePoints = true;
+    game->pointItems[2].increaseLives = false;
+    game->pointItems[2].x = 11099.0f;
+    game->pointItems[2].y = 25.0f;
+
+    game->pointItems[3].visible = true;
+    game->pointItems[3].increasePoints = true;
+    game->pointItems[3].increaseLives = false;
+    game->pointItems[3].x = 11100.0f;
+    game->pointItems[3].y = -150.0f;
+
+    game->pointItems[4].visible = true;
+    game->pointItems[4].increasePoints = true;
+    game->pointItems[4].increaseLives = false;
+    game->pointItems[4].x = 11000.0f;
+    game->pointItems[4].y = 800.0f;
 }

@@ -138,8 +138,6 @@ void doRender(GameState *game){
         SDL_RenderCopy(game->renderer, game->clouds, NULL, &cloudsRepeating);
     }
 
-    drawHud(game);
-
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
@@ -168,7 +166,11 @@ void doRender(GameState *game){
             else {
                 platform.y -= platformObject.additionTop;
                 platform.h += platformObject.additionTop;
+                if(platformObject.collisionFree){
+                    SDL_SetTextureAlphaMod(game->textureSet, 125);
+                }
                 SDL_RenderCopyEx(game->renderer, game->textureSet, &platformObject.textureBox, &platform, 0.0, NULL, platformObject.flip);
+                SDL_SetTextureAlphaMod(game->textureSet, 255);
             }
             // Adding game->scrollX to each x-coordinate accomplishes the sidescrolling effect
         }
@@ -180,7 +182,9 @@ void doRender(GameState *game){
         Collectible collectible = game->healthItems[i];
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
-            SDL_RenderFillRect(game->renderer, &rectCollectible);
+            if(rectCollectible.x + rectCollectible.w >= 0 && rectCollectible.x < width){
+                SDL_RenderCopy(game->renderer, game->heart, NULL, &rectCollectible);
+            }
         }
     }
     
@@ -190,11 +194,14 @@ void doRender(GameState *game){
         Collectible collectible = game->pointItems[i];
         if(collectible.visible){
             SDL_Rect rectCollectible = {collectible.x + game->scrollX, collectible.y, 50, 50};
-            if(rectCollectible.x != 0 && rectCollectible.y != 0){
+            if(rectCollectible.x + rectCollectible.w >= 0 && rectCollectible.x < width){
                 SDL_RenderCopy(game->renderer, game->point, NULL, &rectCollectible);
             }
         }
     }
+
+    drawHud(game);
+
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
@@ -208,16 +215,16 @@ void movePlatform(GameState *game){
     }
     if(game->platforms[9].moveRight){
         if(game->hero.onMoving){
-          game->hero.x += 4; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
+          game->hero.x += 5; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
           game->hero.onMoving = false;  
         }
-        game->platforms[9].x += 4;
+        game->platforms[9].x += 5;
     }else{
         if(game->hero.onMoving){
-          game->hero.x -= 4;
+          game->hero.x -= 5;
           game->hero.onMoving = false;
         }
-        game->platforms[9].x -= 4;
+        game->platforms[9].x -= 5;
     }
     //moves paltform[9]
     if(game->platforms[12].y > 200 ){
