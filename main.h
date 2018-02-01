@@ -2,7 +2,7 @@
 #define MAIN_H
 #include <stdbool.h>
 
-#define N_PLATFORMS 42
+#define N_PLATFORMS 48
 #define N_POINTS 5
 #define N_HEALTH 2
 

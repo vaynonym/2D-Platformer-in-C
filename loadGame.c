@@ -427,18 +427,18 @@ void loadPlatforms(GameState *game){
     game->platforms[45].y = 845;
     game->platforms[45].textureBox = platform5To1;
     //2.2
-    game->platforms[44].height =2*20;
-    game->platforms[44].width = 200;
-    game->platforms[44].x = 9800;
-    game->platforms[44].y = 615;
-    game->platforms[44].collisionFree = true;
-    game->platforms[44].textureBox = platform5To1;
+    game->platforms[46].height =2*20;
+    game->platforms[46].width = 200;
+    game->platforms[46].x = 9800;
+    game->platforms[46].y = 615;
+    game->platforms[46].collisionFree = true;
+    game->platforms[46].textureBox = platform5To1;
 
-    game->platforms[45].height =2*20;
-    game->platforms[45].width = 200;
-    game->platforms[45].x = 9800;
-    game->platforms[45].y = 845;
-    game->platforms[45].textureBox = platform5To1;
+    game->platforms[47].height =2*20;
+    game->platforms[47].width = 200;
+    game->platforms[47].x = 9800;
+    game->platforms[47].y = 845;
+    game->platforms[47].textureBox = platform5To1;
     //3.2
     game->platforms[38].height = 1005;
     game->platforms[38].width = 400;
