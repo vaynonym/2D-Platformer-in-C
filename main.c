@@ -291,10 +291,12 @@ int main(int argc, char* args[]){
 
             const Uint8 *state = SDL_GetKeyboardState(NULL);
             
-            if((game.hero.dx > 0 && !state[SDL_SCANCODE_D]) && !game.hero.onMoving){
+            movePlatform(&game);
+
+            if((game.hero.dx > 0 && !(state[SDL_SCANCODE_D]) || game.hero.onMoving)){
                 game.hero.dx -= 1;
             }
-            else if((game.hero.dx < 0 && !state[SDL_SCANCODE_A]) && !game.hero.onMoving)
+            else if((game.hero.dx < 0 && !(state[SDL_SCANCODE_A]) || game.hero.onMoving))
                 game.hero.dx += 1; 
             
             // The would-be next move
@@ -302,6 +304,7 @@ int main(int argc, char* args[]){
             if( !(game.hero.x < 0 && game.hero.dx < 0) && !(game.scrollX < -levelWidth && game.hero.dx > 0)){ // if the player is not trying to leave the screen
                 game.hero.x += game.hero.dx; // adjust position of characters according to velocity
             }
+
 
             detectCollision(&game);
             
@@ -313,8 +316,6 @@ int main(int argc, char* args[]){
             if (game.scrollX > 0){
                 game.scrollX = 0; // except when he walks further to the left than his spawn point
             }
-
-            movePlatform(&game);
 
             testForAllCollectibles(&game);
         }
