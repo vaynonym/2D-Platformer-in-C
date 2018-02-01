@@ -362,7 +362,7 @@ void loadPlatforms(GameState *game){
     game->platforms[31].x = 9000;
     game->platforms[31].y = -40;
     game->platforms[31].textureBox = platform5To1;
-    //
+    //1.1
     game->platforms[32].height =2*20;
     game->platforms[32].width = 200;
     game->platforms[32].x = 9400;
@@ -381,7 +381,7 @@ void loadPlatforms(GameState *game){
     game->platforms[34].x = 9400;
     game->platforms[34].y = -40;
     game->platforms[34].textureBox = platform5To1;
-    //
+    //2.1
     game->platforms[35].height =2*20;
     game->platforms[35].width = 200;
     game->platforms[35].x = 9800;
@@ -400,7 +400,46 @@ void loadPlatforms(GameState *game){
     game->platforms[37].x = 9800;
     game->platforms[37].y = -40;
     game->platforms[37].textureBox = platform5To1;
-    //
+    //3.1
+    game->platforms[42].height =2*20;
+    game->platforms[42].width = 200;
+    game->platforms[42].x = 9000;
+    game->platforms[42].y = 615;
+    game->platforms[42].collisionFree = true;
+    game->platforms[42].textureBox = platform5To1;
+
+    game->platforms[43].height =2*20;
+    game->platforms[43].width = 200;
+    game->platforms[43].x = 9000;
+    game->platforms[43].y = 845;
+    game->platforms[43].textureBox = platform5To1;
+    //1.2
+    game->platforms[44].height =2*20;
+    game->platforms[44].width = 200;
+    game->platforms[44].x = 9400;
+    game->platforms[44].y = 615;
+    game->platforms[44].collisionFree = true;
+    game->platforms[44].textureBox = platform5To1;
+
+    game->platforms[45].height =2*20;
+    game->platforms[45].width = 200;
+    game->platforms[45].x = 9400;
+    game->platforms[45].y = 845;
+    game->platforms[45].textureBox = platform5To1;
+    //2.2
+    game->platforms[44].height =2*20;
+    game->platforms[44].width = 200;
+    game->platforms[44].x = 9800;
+    game->platforms[44].y = 615;
+    game->platforms[44].collisionFree = true;
+    game->platforms[44].textureBox = platform5To1;
+
+    game->platforms[45].height =2*20;
+    game->platforms[45].width = 200;
+    game->platforms[45].x = 9800;
+    game->platforms[45].y = 845;
+    game->platforms[45].textureBox = platform5To1;
+    //3.2
     game->platforms[38].height = 1005;
     game->platforms[38].width = 400;
     game->platforms[38].x = 10400;
