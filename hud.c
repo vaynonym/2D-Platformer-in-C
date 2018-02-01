@@ -12,10 +12,10 @@ SDL_Color white = {255,255,255,255};
 void initHud(GameState *game){
     game->currentStage = "Draftlevel 24601";
     char livesStr[12] = "";
-    sprintf(livesStr, "Lives: %d", game->hero.lives);
+    sprintf(livesStr, "Lives", game->hero.lives);
 
     char pointsStr[12] = "";
-    sprintf(pointsStr, "Points: %d", game->points);
+    sprintf(pointsStr, "Points", game->points);
 
 
     game->stageLabel = createTextureFromString(game, game->currentStage, white);
@@ -29,11 +29,11 @@ void drawHud(GameState *game){
 
     if(game->updateHud){ // dynamically update lives after a respawn
         char livesStr[12] = "";
-        sprintf(livesStr, "Lives: %d", game->hero.lives);
+        sprintf(livesStr, "Lives");
         game->livesLabel = createTextureFromString(game, livesStr, white);
 
         char pointsStr[12] = "";
-        sprintf(pointsStr, "Points: %d", game->points);
+        sprintf(pointsStr, "Points");
         game->pointsLabel = createTextureFromString(game, pointsStr, white);
 
         game->updateHud = false;
@@ -53,15 +53,25 @@ void drawHud(GameState *game){
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
-    SDL_Rect livesRect = {200, 1060-h*scale, w*scale, h*scale};
+    SDL_Rect livesRect = {50, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->livesLabel, NULL, &livesRect);
 
+    for(int i = 0; i < game->hero.lives; i++){
+        SDL_Rect rect = {120+20*(i+1)+h*scale*(i+1), 1060-h*scale, h*scale, h*scale};
+        SDL_RenderCopy(game->renderer, game->heart, NULL, &rect);
+    }
+
     SDL_QueryTexture(game->pointsLabel, NULL, NULL, &w, &h);
-    SDL_Rect pointsRect = {1600, 1060-h*scale, w*scale, h*scale};
+    SDL_Rect pointsRect = {1870-w*scale, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->pointsLabel, NULL, &pointsRect);
 
+    for(int i = 0; i < game->points; i++){
+        SDL_Rect rect = {1850-w*scale-20*(i+1)-h*scale*(i+1), 1060-h*scale, h*scale, h*scale};
+        SDL_RenderCopy(game->renderer, game->point, NULL, &rect);
+    }
+
     SDL_QueryTexture(game->stageLabel, NULL, NULL, &w, &h);
-    SDL_Rect stageRect = {800, 1060-h*scale, w*scale, h*scale};
+    SDL_Rect stageRect = {960-w*scale*0.5, 1060-h*scale, w*scale, h*scale};
     SDL_RenderCopy(game->renderer, game->stageLabel, NULL, &stageRect);
 }
 
