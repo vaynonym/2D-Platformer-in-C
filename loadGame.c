@@ -126,6 +126,7 @@ void resetGame(GameState *game){
     game->hero.maxdy = -10.0; //maxdy maybe as level of difficulty
     game->hero.jumping = false;
     game->hero.groundCollision = false;
+    game->hero.onMoving = false;
     game->hero.lives = 3;
     game->hero.name = "Hero";
     game->hero.flip = SDL_FLIP_NONE;
