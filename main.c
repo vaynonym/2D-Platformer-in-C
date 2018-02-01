@@ -138,8 +138,6 @@ void doRender(GameState *game){
         SDL_RenderCopy(game->renderer, game->clouds, NULL, &cloudsRepeating);
     }
 
-    drawHud(game);
-
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
@@ -201,6 +199,9 @@ void doRender(GameState *game){
             }
         }
     }
+
+    drawHud(game);
+
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
@@ -214,16 +215,16 @@ void movePlatform(GameState *game){
     }
     if(game->platforms[9].moveRight){
         if(game->hero.onMoving){
-          game->hero.x += 4; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
+          game->hero.x += 5; //hero moves with the platform, if he stand on top of it, simultaneously handels movement on platform[20]
           game->hero.onMoving = false;  
         }
-        game->platforms[9].x += 4;
+        game->platforms[9].x += 5;
     }else{
         if(game->hero.onMoving){
-          game->hero.x -= 4;
+          game->hero.x -= 5;
           game->hero.onMoving = false;
         }
-        game->platforms[9].x -= 4;
+        game->platforms[9].x -= 5;
     }
     //moves paltform[9]
     if(game->platforms[12].y > 200 ){
