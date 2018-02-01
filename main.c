@@ -138,8 +138,6 @@ void doRender(GameState *game){
         SDL_RenderCopy(game->renderer, game->clouds, NULL, &cloudsRepeating);
     }
 
-    drawHud(game);
-
     SDL_Rect heroRect = {game->hero.x + game->scrollX, game->hero.y, game->hero.width, game->hero.height};
 
     SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255); // set new color
@@ -201,6 +199,7 @@ void doRender(GameState *game){
             }
         }
     }
+    drawHud(game);
     // done drawing
     SDL_RenderPresent(game->renderer); // render onto screen
 }
